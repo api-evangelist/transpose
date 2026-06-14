@@ -1,0 +1,47 @@
+name: Transpose Plans
+description: Transpose uses a credit-based billing system where each team is assigned a tier with a monthly credit allowance. Credits track both REST API and SQL Analytics API usage. Each request returns an X-Credits-Charged response header indicating consumption. Data retrieval costs approximately 5000 credits per GB and compute costs approximately 60 credits per second. Overages are available at a fixed price per credit but are disabled by default to prevent unexpected charges.
+plans:
+  - name: Free
+    description: No-credit-card-required free tier for developers to explore and test the Transpose API suite. Includes access to all five REST API families and the SQL Analytics API with a limited monthly credit allowance.
+    url: https://www.transpose.io/pricing
+    price: 0.00
+    currency: USD
+    unit: monthly
+    limits:
+      - name: Monthly Credits
+        description: Fixed monthly credit budget included with the free tier
+        limit: limited
+        unit: credits
+    features:
+      - name: REST API Access
+        description: Access to Block, Token, NFT, ENS, and Token Prices APIs
+      - name: SQL Analytics API
+        description: Custom SQL queries against indexed blockchain data
+      - name: No Credit Card Required
+        description: Sign up and test without payment information
+      - name: X-Credits-Charged Header
+        description: Per-request credit usage returned in response header
+  - name: Paid Tiers
+    description: Credit-based paid plans with higher monthly allowances and optional overage billing. Each tier provides a fixed number of monthly credits with the ability to purchase additional credits at a fixed per-credit rate once the allowance is exhausted.
+    url: https://www.transpose.io/pricing
+    price: contact
+    currency: USD
+    unit: monthly
+    limits:
+      - name: Monthly Credits
+        description: Higher fixed monthly credit budget depending on tier
+        limit: varies
+        unit: credits
+      - name: Overage Credits
+        description: Additional credits purchasable at fixed per-credit rate when monthly allowance is exceeded
+        limit: optional
+        unit: credits
+    features:
+      - name: Full API Access
+        description: Complete access to all Transpose API families
+      - name: Overage Billing
+        description: Optional overage enabled to continue usage beyond monthly credit limit
+      - name: Team Dashboard
+        description: API key management and usage tracking in app.transpose.io
+      - name: Credit Tracking
+        description: Real-time credit consumption via X-Credits-Charged response headers

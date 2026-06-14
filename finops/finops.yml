@@ -1,0 +1,39 @@
+name: Transpose FinOps
+description: Transpose uses a credit-based consumption model for financial operations. Credits serve as the single unit of account for both REST API and SQL Analytics API usage, enabling unified cost tracking across all API families. Each team is assigned a monthly credit budget based on their tier. Costs scale with data volume (credits per GB returned) and compute time (credits per second of query execution), making query optimization a primary lever for cost management. The X-Credits-Charged response header on every request enables granular per-call cost attribution.
+model: credits
+currency: USD
+billing_period: monthly
+cost_drivers:
+  - name: Data Volume
+    description: Credits consumed scale with the amount of data returned by each API request. Retrieving larger result sets or time ranges increases credit consumption proportionally.
+    unit: credits per GB
+    rate: 5000
+    optimization: Use date range filters, pagination, and targeted queries to minimize data returned per request.
+  - name: Compute Time
+    description: Credits consumed scale with the database compute time required to execute a query, particularly relevant for SQL Analytics API requests.
+    unit: credits per second
+    rate: 60
+    optimization: Write efficient SQL with proper filtering and avoid full-table scans. Use indexed fields (chain_id, contract_address, timestamps) in WHERE clauses.
+  - name: Monthly Credit Allowance
+    description: Each tier provides a fixed monthly credit budget. Unused credits do not roll over. Overages are opt-in and billed at a fixed per-credit rate.
+    unit: credits
+    period: monthly
+    rollover: false
+cost_visibility:
+  - name: X-Credits-Charged Header
+    description: Every API response includes this header with the exact credit cost of the request, enabling real-time per-call cost tracking.
+    type: response_header
+  - name: Team Dashboard
+    description: The app.transpose.io dashboard provides account-level credit usage tracking and remaining monthly allowance visibility.
+    url: https://app.transpose.io
+overage:
+  description: Monthly credit overages are disabled by default to protect against unexpected charges. Teams can opt in to overage billing to continue API access after exhausting their monthly allowance. Overages are charged at a fixed per-credit rate at the end of the billing cycle.
+  enabled_by_default: false
+  billing: end of billing period
+optimization_tips:
+  - tip: Use specific date ranges to limit historical data returned per query
+  - tip: Apply contract_address and chain_id filters to narrow result sets
+  - tip: Use pagination (limit parameter) rather than fetching all results at once
+  - tip: Monitor X-Credits-Charged headers to identify high-cost query patterns
+  - tip: Use REST Verified Endpoints for common queries instead of SQL API to reduce compute costs
+  - tip: Disable overages unless required to prevent runaway credit consumption

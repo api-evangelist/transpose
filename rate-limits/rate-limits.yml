@@ -1,0 +1,33 @@
+name: Transpose Rate Limits
+description: Transpose enforces rate limits at the tier level rather than publishing fixed requests-per-second figures publicly. Usage is metered via a credit system where each API request consumes credits based on the volume of data returned and database compute time used. Data retrieval costs approximately 5000 credits per GB and compute costs approximately 60 credits per second of query execution. Every response includes an X-Credits-Charged header indicating the exact credit cost of that request. Monthly credit allowances vary by plan tier, with optional overage billing available once the monthly budget is exhausted.
+limits:
+  - name: Monthly Credit Allowance
+    description: Each team tier includes a fixed monthly credit budget. Once exhausted, requests are blocked unless overage billing is enabled.
+    scope: account
+    unit: credits
+    period: monthly
+    limit: tier-dependent
+  - name: Data Retrieval Cost
+    description: API requests that return large datasets consume credits proportional to the data volume returned. Approximately 5000 credits are consumed per GB of data retrieved.
+    scope: request
+    unit: credits per GB
+    cost: 5000
+  - name: Compute Cost
+    description: SQL Analytics API and complex REST queries consume credits proportional to database compute time. Approximately 60 credits are consumed per second of compute used.
+    scope: request
+    unit: credits per second
+    cost: 60
+  - name: Pagination Limit
+    description: REST API endpoints support a limit parameter controlling results per page, with a default of 100 results per request.
+    scope: request
+    unit: results per page
+    limit: 100
+  - name: Overage Policy
+    description: Overages are disabled by default to protect against unintended charges. When enabled, additional credits can be consumed beyond the monthly allowance at a fixed per-credit cost billed at the end of the billing period.
+    scope: account
+    unit: credits
+    enabled_by_default: false
+headers:
+  - name: X-Credits-Charged
+    description: Response header returned on every API request indicating the number of credits consumed by that specific request. Used for monitoring and budgeting credit usage.
+    type: response
