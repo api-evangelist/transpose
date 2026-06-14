@@ -1,0 +1,12 @@
+{
+  "description": "Example SQL Analytics API request querying top NFT collections by sales volume",
+  "method": "POST",
+  "url": "https://api.transpose.io/sql",
+  "headers": {
+    "X-API-KEY": "YOUR_API_KEY",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "sql": "SELECT contract_address, COUNT(*) AS sale_count, SUM(CAST(price AS FLOAT)) AS total_volume FROM ethereum.nft_sales WHERE timestamp >= '2023-01-01' AND timestamp < '2024-01-01' GROUP BY contract_address ORDER BY total_volume DESC LIMIT 10;"
+  }
+}

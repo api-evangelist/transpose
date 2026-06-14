@@ -1,0 +1,96 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "schema": "https://schema.org/",
+    "dcat": "https://www.w3.org/ns/dcat#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "WebAPI",
+  "@id": "https://www.transpose.io/",
+  "name": "Transpose API",
+  "description": "Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains.",
+  "url": "https://www.transpose.io/",
+  "documentation": "https://docs.transpose.io/",
+  "termsOfService": "https://www.transpose.io/",
+  "provider": {
+    "@type": "Organization",
+    "name": "Transpose",
+    "url": "https://www.transpose.io/",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "url": "https://www.transpose.io/"
+    }
+  },
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "serviceUrl": "https://api.transpose.io",
+    "name": "REST API"
+  },
+  "keywords": [
+    "blockchain",
+    "NFT",
+    "cryptocurrency",
+    "Web3",
+    "Ethereum",
+    "token transfers",
+    "smart contracts",
+    "historical data",
+    "DeFi",
+    "DEX",
+    "ERC-20",
+    "ERC-721",
+    "ERC-1155",
+    "ENS",
+    "SQL analytics"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Transpose API Plans",
+    "url": "https://www.transpose.io/pricing"
+  },
+  "subjectOf": [
+    {
+      "@type": "WebAPI",
+      "name": "Transpose Block API",
+      "description": "Low-level blockchain primitives including accounts, blocks, transactions, logs, and traces.",
+      "documentation": "https://docs.transpose.io/verified-endpoints/block-api/overview/",
+      "endpointURL": "https://api.transpose.io/block"
+    },
+    {
+      "@type": "WebAPI",
+      "name": "Transpose Token API",
+      "description": "ERC-20, ERC-777, and native token balances, transfers, and DEX swaps.",
+      "documentation": "https://docs.transpose.io/verified-endpoints/token-api/overview/",
+      "endpointURL": "https://api.transpose.io/token"
+    },
+    {
+      "@type": "WebAPI",
+      "name": "Transpose NFT API",
+      "description": "NFT collections, ownership, sales, and transfers for ERC-721 and ERC-1155 tokens.",
+      "documentation": "https://docs.transpose.io/verified-endpoints/nft-api/routes/transfers/",
+      "endpointURL": "https://api.transpose.io/nft"
+    },
+    {
+      "@type": "WebAPI",
+      "name": "Transpose ENS API",
+      "description": "Ethereum Name Service records and transfer history.",
+      "documentation": "https://docs.transpose.io/",
+      "endpointURL": "https://api.transpose.io/ens"
+    },
+    {
+      "@type": "WebAPI",
+      "name": "Transpose Token Prices API",
+      "description": "Real-time and historical OHLC price data for any token including LP tokens.",
+      "documentation": "https://docs.transpose.io/verified-endpoints/token-prices-api/overview/",
+      "endpointURL": "https://api.transpose.io/prices"
+    },
+    {
+      "@type": "WebAPI",
+      "name": "Transpose SQL Analytics API",
+      "description": "Custom SQL query interface against Transpose's entire indexed blockchain dataset.",
+      "documentation": "https://docs.transpose.io/sql/overview/",
+      "endpointURL": "https://api.transpose.io/sql"
+    }
+  ]
+}

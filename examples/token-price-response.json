@@ -1,0 +1,26 @@
+{
+  "description": "Example response from GET /prices/token-price for WETH on Ethereum",
+  "status": 200,
+  "headers": {
+    "X-Credits-Charged": 1,
+    "Content-Type": "application/json"
+  },
+  "request": {
+    "method": "GET",
+    "url": "https://api.transpose.io/prices/token-price?chain_id=ethereum&contract_address=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "headers": {
+      "X-API-KEY": "YOUR_API_KEY"
+    }
+  },
+  "body": {
+    "status": "ok",
+    "results": [
+      {
+        "contract_address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+        "timestamp": "2023-11-01T15:00:00Z",
+        "price_usd": 1845.32,
+        "price_eth": 1.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.transpose.io/schemas/nft-transfer",
+  "title": "NFT Transfer",
+  "description": "An NFT transfer event representing a mint, transfer, or burn of an ERC-721 or ERC-1155 token.",
+  "type": "object",
+  "properties": {
+    "transaction_hash": {
+      "type": "string",
+      "description": "Hash of the transaction containing this transfer.",
+      "pattern": "^0x[0-9a-fA-F]{64}$"
+    },
+    "log_index": {
+      "type": "integer",
+      "description": "Index of the event log within the transaction.",
+      "minimum": 0
+    },
+    "block_number": {
+      "type": "integer",
+      "description": "Block number containing this transfer.",
+      "minimum": 0
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 timestamp of the block that included this transfer."
+    },
+    "contract_address": {
+      "type": "string",
+      "description": "Contract address of the NFT collection.",
+      "pattern": "^0x[0-9a-fA-F]{40}$"
+    },
+    "token_id": {
+      "type": "string",
+      "description": "The NFT token ID (as string to support large integers)."
+    },
+    "from_address": {
+      "type": "string",
+      "description": "Sender address. Zero address (0x000...000) indicates a mint.",
+      "pattern": "^0x[0-9a-fA-F]{40}$"
+    },
+    "to_address": {
+      "type": "string",
+      "description": "Recipient address. Zero address indicates a burn.",
+      "pattern": "^0x[0-9a-fA-F]{40}$"
+    },
+    "token_standard": {
+      "type": "string",
+      "description": "The token standard governing this transfer.",
+      "enum": ["erc721", "erc1155"]
+    },
+    "quantity": {
+      "type": ["integer", "null"],
+      "description": "Number of tokens transferred. Always 1 for ERC-721; may be >1 for ERC-1155.",
+      "minimum": 1
+    }
+  },
+  "required": [
+    "transaction_hash",
+    "block_number",
+    "timestamp",
+    "contract_address",
+    "token_id",
+    "from_address",
+    "to_address",
+    "token_standard"
+  ],
+  "additionalProperties": true
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Example response from the SQL Analytics API for a top NFT collections query",
+  "status": 200,
+  "headers": {
+    "X-Credits-Charged": 50,
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "status": "ok",
+    "columns": ["contract_address", "sale_count", "total_volume"],
+    "results": [
+      {
+        "contract_address": "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
+        "sale_count": 12450,
+        "total_volume": 85432.75
+      },
+      {
+        "contract_address": "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB",
+        "sale_count": 8920,
+        "total_volume": 62100.20
+      },
+      {
+        "contract_address": "0x60E4d786628Fea6478F785A6d7e704777c86a7c6",
+        "sale_count": 7630,
+        "total_volume": 45876.50
+      }
+    ]
+  }
+}

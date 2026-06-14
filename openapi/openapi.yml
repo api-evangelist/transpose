@@ -1,0 +1,1885 @@
+openapi: 3.0.3
+info:
+  title: Transpose API
+  description: >
+    Historical blockchain data REST API providing access to transaction history,
+    token transfers, NFT metadata, smart contract events, DEX swaps, and price data
+    across Ethereum and other EVM-compatible chains. Offers five enterprise-grade
+    REST APIs plus a SQL Analytics API for querying indexed blockchain data across
+    Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
+  version: 1.0.0
+  contact:
+    name: Transpose Support
+    url: https://www.transpose.io/
+  license:
+    name: Commercial
+    url: https://www.transpose.io/pricing
+
+servers:
+  - url: https://api.transpose.io
+    description: Transpose production API
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: API key obtained from your Transpose team dashboard.
+
+  parameters:
+    ChainId:
+      name: chain_id
+      in: query
+      required: true
+      description: >
+        A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain
+        to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum,
+        base, avalanche.
+      schema:
+        type: string
+        example: ethereum
+        enum:
+          - ethereum
+          - polygon
+          - optimism
+          - scroll
+          - arbitrum
+          - base
+          - avalanche
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: desc
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
+    TransferredAfter:
+      name: transferred_after
+      in: query
+      required: false
+      description: >
+        The earlier transfer date, inclusive. Accepts Unix epoch seconds or
+        ISO-8601 format.
+      schema:
+        type: string
+    TransferredBefore:
+      name: transferred_before
+      in: query
+      required: false
+      description: >
+        The later transfer date, inclusive. Accepts Unix epoch seconds or
+        ISO-8601 format.
+      schema:
+        type: string
+    ContractAddress:
+      name: contract_address
+      in: query
+      required: false
+      description: The contract address to filter results by.
+      schema:
+        type: string
+        example: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
+    AccountAddress:
+      name: account_address
+      in: query
+      required: false
+      description: The wallet or account address to filter results by.
+      schema:
+        type: string
+        example: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+
+  schemas:
+    Account:
+      type: object
+      description: Represents an externally-owned account or smart contract.
+      properties:
+        address:
+          type: string
+          description: The account's blockchain address.
+        account_type:
+          type: string
+          description: Whether the account is an EOA or smart contract.
+          enum: [externally_owned_account, contract]
+        created_timestamp:
+          type: string
+          format: date-time
+          description: When the account was first seen on-chain.
+        creator_address:
+          type: string
+          description: The address that created this contract (if applicable).
+        created_block_number:
+          type: integer
+          description: Block number when the account was created.
+
+    Block:
+      type: object
+      description: Represents a blockchain block.
+      properties:
+        block_number:
+          type: integer
+          description: The block number.
+        block_hash:
+          type: string
+          description: The block hash.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the block was mined.
+        miner:
+          type: string
+          description: Address of the block miner.
+        transaction_count:
+          type: integer
+          description: Number of transactions in the block.
+        gas_used:
+          type: integer
+          description: Total gas used by all transactions.
+        base_fee_per_gas:
+          type: string
+          description: Base fee per gas in wei (EIP-1559 blocks).
+
+    Transaction:
+      type: object
+      description: Represents a blockchain transaction.
+      properties:
+        transaction_hash:
+          type: string
+          description: The transaction hash.
+        block_number:
+          type: integer
+          description: Block number containing this transaction.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the transaction was included in a block.
+        from_address:
+          type: string
+          description: The sender's address.
+        to_address:
+          type: string
+          description: The recipient's address.
+        value:
+          type: string
+          description: Value transferred in wei.
+        gas_price:
+          type: string
+          description: Gas price in wei.
+        gas_used:
+          type: integer
+          description: Actual gas consumed.
+        status:
+          type: integer
+          description: Transaction status (1 = success, 0 = failure).
+        method_id:
+          type: string
+          description: First 4 bytes of call data identifying the contract method.
+
+    Log:
+      type: object
+      description: Represents a smart contract event log.
+      properties:
+        transaction_hash:
+          type: string
+          description: Transaction hash containing this log.
+        log_index:
+          type: integer
+          description: Index of the log within the transaction.
+        block_number:
+          type: integer
+          description: Block number containing this log.
+        timestamp:
+          type: string
+          format: date-time
+        contract_address:
+          type: string
+          description: Address of the contract that emitted this log.
+        topic_0:
+          type: string
+          description: Event signature hash.
+        data:
+          type: string
+          description: Non-indexed log data.
+
+    Trace:
+      type: object
+      description: Represents an internal transaction trace.
+      properties:
+        transaction_hash:
+          type: string
+        trace_index:
+          type: integer
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        from_address:
+          type: string
+        to_address:
+          type: string
+        value:
+          type: string
+          description: Value transferred in wei.
+        call_type:
+          type: string
+          enum: [call, staticcall, delegatecall, create, selfdestruct]
+
+    Token:
+      type: object
+      description: Represents an ERC-20 or ERC-777 fungible token.
+      properties:
+        contract_address:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+        decimals:
+          type: integer
+        total_supply:
+          type: string
+        created_timestamp:
+          type: string
+          format: date-time
+        creator_address:
+          type: string
+
+    TokenTransfer:
+      type: object
+      description: Represents a token transfer event.
+      properties:
+        transaction_hash:
+          type: string
+        log_index:
+          type: integer
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        contract_address:
+          type: string
+        from_address:
+          type: string
+        to_address:
+          type: string
+        quantity:
+          type: string
+          description: Amount transferred (in token's smallest unit).
+
+    TokenSwap:
+      type: object
+      description: Represents a DEX swap event.
+      properties:
+        transaction_hash:
+          type: string
+        log_index:
+          type: integer
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        exchange_name:
+          type: string
+        pair_address:
+          type: string
+        from_address:
+          type: string
+        token_in_address:
+          type: string
+        token_out_address:
+          type: string
+        quantity_in:
+          type: string
+        quantity_out:
+          type: string
+
+    NativeTokenTransfer:
+      type: object
+      description: Represents a native token (ETH, MATIC, etc.) transfer.
+      properties:
+        transaction_hash:
+          type: string
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        from_address:
+          type: string
+        to_address:
+          type: string
+        value:
+          type: string
+          description: Value transferred in wei.
+
+    NftCollection:
+      type: object
+      description: Represents an NFT collection.
+      properties:
+        contract_address:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+        token_standard:
+          type: string
+          enum: [erc721, erc1155]
+        created_timestamp:
+          type: string
+          format: date-time
+        creator_address:
+          type: string
+        total_supply:
+          type: integer
+
+    Nft:
+      type: object
+      description: Represents an individual NFT.
+      properties:
+        contract_address:
+          type: string
+        token_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        image_url:
+          type: string
+        minted_timestamp:
+          type: string
+          format: date-time
+        owner_address:
+          type: string
+
+    NftTransfer:
+      type: object
+      description: Represents an NFT transfer event.
+      properties:
+        transaction_hash:
+          type: string
+        log_index:
+          type: integer
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        contract_address:
+          type: string
+        token_id:
+          type: string
+        from_address:
+          type: string
+        to_address:
+          type: string
+        token_standard:
+          type: string
+          enum: [erc721, erc1155]
+
+    NftSale:
+      type: object
+      description: Represents an NFT sale transaction.
+      properties:
+        transaction_hash:
+          type: string
+        log_index:
+          type: integer
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        contract_address:
+          type: string
+        token_id:
+          type: string
+        seller_address:
+          type: string
+        buyer_address:
+          type: string
+        price:
+          type: string
+          description: Sale price in ETH.
+        exchange_name:
+          type: string
+
+    EnsRecord:
+      type: object
+      description: Represents an ENS domain record.
+      properties:
+        ens_name:
+          type: string
+          description: The ENS domain name (e.g., vitalik.eth).
+        node:
+          type: string
+          description: The namehash of the ENS name.
+        token_id:
+          type: string
+        owner_address:
+          type: string
+        resolved_address:
+          type: string
+        registration_timestamp:
+          type: string
+          format: date-time
+        expiration_timestamp:
+          type: string
+          format: date-time
+
+    EnsTransfer:
+      type: object
+      description: Represents an ENS name transfer or registration event.
+      properties:
+        transaction_hash:
+          type: string
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        ens_name:
+          type: string
+        from_address:
+          type: string
+        to_address:
+          type: string
+
+    TokenPrice:
+      type: object
+      description: Represents a point-in-time token price.
+      properties:
+        contract_address:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        price_usd:
+          type: number
+          description: Token price in USD.
+        price_eth:
+          type: number
+          description: Token price in ETH.
+
+    OhlcPrice:
+      type: object
+      description: Represents OHLC candlestick price data for a token.
+      properties:
+        contract_address:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        interval:
+          type: string
+          description: Candlestick interval (e.g., minute, hour, day).
+        open_usd:
+          type: number
+        high_usd:
+          type: number
+        low_usd:
+          type: number
+        close_usd:
+          type: number
+        volume_usd:
+          type: number
+
+    SqlQueryRequest:
+      type: object
+      required:
+        - sql
+      properties:
+        sql:
+          type: string
+          description: >
+            SQL query against Transpose's indexed blockchain data. Tables are
+            namespaced by chain (e.g., ethereum.nft_sales, polygon.tokens).
+          example: "SELECT * FROM ethereum.nft_sales ORDER BY timestamp DESC LIMIT 10;"
+
+    SqlQueryResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Query status.
+        results:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+          description: Array of result rows as key-value objects.
+        columns:
+          type: array
+          items:
+            type: string
+          description: Column names of the result set.
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
+
+tags:
+  - name: Block API
+    description: >
+      Low-level blockchain primitives including accounts, blocks, transactions,
+      logs, and traces across EVM chains.
+  - name: Token API
+    description: >
+      ERC-20, ERC-777, and native token balances, transfers, and DEX swaps.
+  - name: NFT API
+    description: >
+      NFT collections, ownership, sales, and transfers for ERC-721 and ERC-1155
+      tokens.
+  - name: ENS API
+    description: Ethereum Name Service records and transfer history.
+  - name: Token Prices API
+    description: >
+      Real-time and historical OHLC price data for any token including LP tokens.
+  - name: SQL Analytics API
+    description: >
+      Custom SQL query interface against Transpose's entire indexed blockchain
+      dataset.
+
+paths:
+
+  # ─── Block API ───────────────────────────────────────────────────────────────
+
+  /block/accounts:
+    get:
+      tags: [Block API]
+      summary: Get Accounts
+      operationId: getAccounts
+      description: >
+        Retrieve externally-owned accounts and smart contracts with metadata.
+        Filter by address, creator, or date created.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: address
+          in: query
+          required: false
+          description: Filter by a specific account address.
+          schema:
+            type: string
+        - name: creator_address
+          in: query
+          required: false
+          description: Filter accounts by the address that created them.
+          schema:
+            type: string
+        - name: created_after
+          in: query
+          required: false
+          description: Return accounts created after this date (ISO-8601 or Unix timestamp).
+          schema:
+            type: string
+        - name: created_before
+          in: query
+          required: false
+          description: Return accounts created before this date (ISO-8601 or Unix timestamp).
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing matching accounts.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+              description: Number of API credits consumed by this request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Account'
+        '401':
+          description: Unauthorized — missing or invalid API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /block/blocks:
+    get:
+      tags: [Block API]
+      summary: Get Blocks
+      operationId: getBlocks
+      description: >
+        Retrieve historical blocks with fee calculations. Filter by date or
+        block number range.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: block_number_above
+          in: query
+          required: false
+          description: Return blocks with number greater than or equal to this value.
+          schema:
+            type: integer
+        - name: block_number_below
+          in: query
+          required: false
+          description: Return blocks with number less than or equal to this value.
+          schema:
+            type: integer
+        - name: mined_after
+          in: query
+          required: false
+          description: Return blocks mined after this date (ISO-8601 or Unix timestamp).
+          schema:
+            type: string
+        - name: mined_before
+          in: query
+          required: false
+          description: Return blocks mined before this date (ISO-8601 or Unix timestamp).
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing matching blocks.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Block'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /block/transactions:
+    get:
+      tags: [Block API]
+      summary: Get Transactions
+      operationId: getTransactions
+      description: >
+        Query all transactions with flexible filtering by account, block, contract,
+        date, or transaction hash.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: from_address
+          in: query
+          required: false
+          description: Filter transactions by sender address.
+          schema:
+            type: string
+        - name: to_address
+          in: query
+          required: false
+          description: Filter transactions by recipient address.
+          schema:
+            type: string
+        - name: block_number
+          in: query
+          required: false
+          description: Filter transactions by block number.
+          schema:
+            type: integer
+        - name: transaction_hash
+          in: query
+          required: false
+          description: Retrieve a specific transaction by its hash.
+          schema:
+            type: string
+        - name: timestamp_above
+          in: query
+          required: false
+          description: Return transactions after this timestamp (ISO-8601 or Unix).
+          schema:
+            type: string
+        - name: timestamp_below
+          in: query
+          required: false
+          description: Return transactions before this timestamp (ISO-8601 or Unix).
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing matching transactions.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Transaction'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /block/logs:
+    get:
+      tags: [Block API]
+      summary: Get Logs
+      operationId: getLogs
+      description: Retrieve and filter historical smart contract event logs by block or transaction.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: block_number
+          in: query
+          required: false
+          description: Filter logs by block number.
+          schema:
+            type: integer
+        - name: transaction_hash
+          in: query
+          required: false
+          description: Filter logs by transaction hash.
+          schema:
+            type: string
+        - name: contract_address
+          in: query
+          required: false
+          description: Filter logs by emitting contract address.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing matching logs.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Log'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /block/traces:
+    get:
+      tags: [Block API]
+      summary: Get Traces
+      operationId: getTraces
+      description: Retrieve internal transaction traces filtered by account, block, transaction, or contract.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: from_address
+          in: query
+          required: false
+          description: Filter traces by the calling address.
+          schema:
+            type: string
+        - name: to_address
+          in: query
+          required: false
+          description: Filter traces by the receiving address.
+          schema:
+            type: string
+        - name: block_number
+          in: query
+          required: false
+          description: Filter traces by block number.
+          schema:
+            type: integer
+        - name: transaction_hash
+          in: query
+          required: false
+          description: Filter traces by transaction hash.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing matching traces.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Trace'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ─── Token API ───────────────────────────────────────────────────────────────
+
+  /token/tokens:
+    get:
+      tags: [Token API]
+      summary: Get Tokens
+      operationId: getTokens
+      description: >
+        Retrieve ERC-20 and ERC-777 token metadata. Filter by contract address,
+        name, symbol, date created, or owner.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: contract_address
+          in: query
+          required: false
+          description: Filter by token contract address.
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          description: Filter tokens by name (partial match supported).
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          required: false
+          description: Filter tokens by symbol.
+          schema:
+            type: string
+        - name: owner_address
+          in: query
+          required: false
+          description: Filter tokens by owner address.
+          schema:
+            type: string
+        - name: created_after
+          in: query
+          required: false
+          description: Return tokens created after this date.
+          schema:
+            type: string
+        - name: created_before
+          in: query
+          required: false
+          description: Return tokens created before this date.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing matching tokens.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Token'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /token/transfers:
+    get:
+      tags: [Token API]
+      summary: Get Token Transfers
+      operationId: getTokenTransfers
+      description: >
+        Query all token transfers including mints, sends, and burns across ERC-20
+        and ERC-777 tokens within a specified date range.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: contract_address
+          in: query
+          required: false
+          description: Filter transfers by token contract address.
+          schema:
+            type: string
+        - name: from_address
+          in: query
+          required: false
+          description: Filter transfers by sender address.
+          schema:
+            type: string
+        - name: to_address
+          in: query
+          required: false
+          description: Filter transfers by recipient address.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/TransferredAfter'
+        - $ref: '#/components/parameters/TransferredBefore'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing token transfers.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TokenTransfer'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /token/swaps:
+    get:
+      tags: [Token API]
+      summary: Get Token Swaps
+      operationId: getTokenSwaps
+      description: >
+        Fetch swap activity across decentralized exchanges including Uniswap,
+        SushiSwap, and others.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: contract_address
+          in: query
+          required: false
+          description: Filter swaps by token contract address.
+          schema:
+            type: string
+        - name: account_address
+          in: query
+          required: false
+          description: Filter swaps by initiating account address.
+          schema:
+            type: string
+        - name: pair_address
+          in: query
+          required: false
+          description: Filter swaps by DEX pair/pool address.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/TransferredAfter'
+        - $ref: '#/components/parameters/TransferredBefore'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing DEX swap events.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TokenSwap'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /token/native-token-transfers:
+    get:
+      tags: [Token API]
+      summary: Get Native Token Transfers
+      operationId: getNativeTokenTransfers
+      description: >
+        Retrieve historical native token (ETH, MATIC, etc.) transfers and account
+        balances across supported chains.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: account_address
+          in: query
+          required: false
+          description: Filter native transfers by account address (sender or receiver).
+          schema:
+            type: string
+        - $ref: '#/components/parameters/TransferredAfter'
+        - $ref: '#/components/parameters/TransferredBefore'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing native token transfers.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NativeTokenTransfer'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /token/owners:
+    get:
+      tags: [Token API]
+      summary: Get Token Owners
+      operationId: getTokenOwners
+      description: >
+        Access token holders and their balances, sorted by amount. Supports
+        historical ownership queries.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: contract_address
+          in: query
+          required: false
+          description: Token contract address to query owners for.
+          schema:
+            type: string
+        - name: owner_address
+          in: query
+          required: false
+          description: Filter by a specific owner address.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing token owners and balances.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        owner_address:
+                          type: string
+                        contract_address:
+                          type: string
+                        quantity:
+                          type: string
+                          description: Token balance in smallest unit.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ─── NFT API ─────────────────────────────────────────────────────────────────
+
+  /nft/collections:
+    get:
+      tags: [NFT API]
+      summary: Get NFT Collections
+      operationId: getNftCollections
+      description: >
+        Query NFT collections using flexible parameters to retrieve metadata and
+        images. Filter by contract address, name, symbol, or creation date.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: contract_address
+          in: query
+          required: false
+          description: Filter by collection contract address.
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          description: Filter collections by name (partial match).
+          schema:
+            type: string
+        - name: symbol
+          in: query
+          required: false
+          description: Filter collections by symbol.
+          schema:
+            type: string
+        - name: created_after
+          in: query
+          required: false
+          description: Return collections created after this date.
+          schema:
+            type: string
+        - name: created_before
+          in: query
+          required: false
+          description: Return collections created before this date.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing NFT collections.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NftCollection'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /nft/nfts:
+    get:
+      tags: [NFT API]
+      summary: Get NFTs
+      operationId: getNfts
+      description: >
+        Retrieve individual NFTs with rich metadata and media assets. Filter by
+        contract, token ID, mint date, name, or owner.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: contract_address
+          in: query
+          required: false
+          description: Filter NFTs by collection contract address.
+          schema:
+            type: string
+        - name: token_id
+          in: query
+          required: false
+          description: Filter by specific token ID.
+          schema:
+            type: string
+        - name: owner_address
+          in: query
+          required: false
+          description: Filter NFTs by current owner address.
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          description: Filter NFTs by name.
+          schema:
+            type: string
+        - name: minted_after
+          in: query
+          required: false
+          description: Return NFTs minted after this date.
+          schema:
+            type: string
+        - name: minted_before
+          in: query
+          required: false
+          description: Return NFTs minted before this date.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing NFTs.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Nft'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /nft/transfers:
+    get:
+      tags: [NFT API]
+      summary: Get NFT Transfers
+      operationId: getNftTransfers
+      description: >
+        Track all NFT movements including mints, transfers, and burns across
+        ERC-721 and ERC-1155 standards within a specified date range.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: contract_address
+          in: query
+          required: false
+          description: Filter transfers by NFT collection contract address.
+          schema:
+            type: string
+        - name: token_id
+          in: query
+          required: false
+          description: Filter transfers by token ID.
+          schema:
+            type: string
+        - name: from_address
+          in: query
+          required: false
+          description: Filter transfers by sender address.
+          schema:
+            type: string
+        - name: to_address
+          in: query
+          required: false
+          description: Filter transfers by recipient address.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/TransferredAfter'
+        - $ref: '#/components/parameters/TransferredBefore'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing NFT transfers.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NftTransfer'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /nft/sales:
+    get:
+      tags: [NFT API]
+      summary: Get NFT Sales
+      operationId: getNftSales
+      description: >
+        Query NFT sales transactions across decentralized exchanges including
+        OpenSea, LooksRare, Blur, and other NFT marketplaces.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: contract_address
+          in: query
+          required: false
+          description: Filter sales by NFT collection contract address.
+          schema:
+            type: string
+        - name: token_id
+          in: query
+          required: false
+          description: Filter sales by token ID.
+          schema:
+            type: string
+        - name: account_address
+          in: query
+          required: false
+          description: Filter sales by buyer or seller address.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/TransferredAfter'
+        - $ref: '#/components/parameters/TransferredBefore'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing NFT sales.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NftSale'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /nft/owners:
+    get:
+      tags: [NFT API]
+      summary: Get NFT Owners
+      operationId: getNftOwners
+      description: >
+        Access ownership information for collections and individual tokens,
+        including historical NFT balances and ownership history.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: contract_address
+          in: query
+          required: false
+          description: Filter owners by collection contract address.
+          schema:
+            type: string
+        - name: token_id
+          in: query
+          required: false
+          description: Filter by specific token ID.
+          schema:
+            type: string
+        - name: owner_address
+          in: query
+          required: false
+          description: Filter by specific owner address.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing NFT ownership data.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        contract_address:
+                          type: string
+                        token_id:
+                          type: string
+                        owner_address:
+                          type: string
+                        quantity:
+                          type: integer
+                          description: Token balance (relevant for ERC-1155).
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ─── ENS API ─────────────────────────────────────────────────────────────────
+
+  /ens/records:
+    get:
+      tags: [ENS API]
+      summary: Get ENS Records
+      operationId: getEnsRecords
+      description: >
+        Retrieve any ENS record ever created. Filter by account, owner, ENS name,
+        node, registration date, or expiration date.
+      parameters:
+        - name: ens_name
+          in: query
+          required: false
+          description: Look up a specific ENS name (e.g., vitalik.eth).
+          schema:
+            type: string
+            example: vitalik.eth
+        - name: owner_address
+          in: query
+          required: false
+          description: Filter ENS records by owner address.
+          schema:
+            type: string
+        - name: account_address
+          in: query
+          required: false
+          description: Filter ENS records by resolved account address.
+          schema:
+            type: string
+        - name: token_id
+          in: query
+          required: false
+          description: Filter by ENS token ID.
+          schema:
+            type: string
+        - name: registered_after
+          in: query
+          required: false
+          description: Return ENS records registered after this date.
+          schema:
+            type: string
+        - name: registered_before
+          in: query
+          required: false
+          description: Return ENS records registered before this date.
+          schema:
+            type: string
+        - name: expires_after
+          in: query
+          required: false
+          description: Return ENS records expiring after this date.
+          schema:
+            type: string
+        - name: expires_before
+          in: query
+          required: false
+          description: Return ENS records expiring before this date.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing ENS records.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EnsRecord'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /ens/transfers:
+    get:
+      tags: [ENS API]
+      summary: Get ENS Transfers
+      operationId: getEnsTransfers
+      description: >
+        Retrieve all historical and live ENS name transfers and registrations.
+        Filter by ENS name or token ID.
+      parameters:
+        - name: ens_name
+          in: query
+          required: false
+          description: Filter transfers by ENS name.
+          schema:
+            type: string
+        - name: token_id
+          in: query
+          required: false
+          description: Filter transfers by ENS token ID.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/TransferredAfter'
+        - $ref: '#/components/parameters/TransferredBefore'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing ENS transfer events.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EnsTransfer'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ─── Token Prices API ─────────────────────────────────────────────────────────
+
+  /prices/token-price:
+    get:
+      tags: [Token Prices API]
+      summary: Get Token Price
+      operationId: getTokenPrice
+      description: >
+        Access up-to-the-minute pricing details for any token by contract address.
+        Returns current price in USD and ETH.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: contract_address
+          in: query
+          required: true
+          description: The token contract address to query price for.
+          schema:
+            type: string
+            example: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+      responses:
+        '200':
+          description: Successful response containing current token price.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TokenPrice'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /prices/token-price-history:
+    get:
+      tags: [Token Prices API]
+      summary: Get Token Price History
+      operationId: getTokenPriceHistory
+      description: >
+        Gain access to a comprehensive token price series. Download data in
+        customizable formats for any token address within a specified time range.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: contract_address
+          in: query
+          required: true
+          description: The token contract address to query price history for.
+          schema:
+            type: string
+        - name: timestamp_after
+          in: query
+          required: false
+          description: Start of price history range (ISO-8601 or Unix timestamp).
+          schema:
+            type: string
+        - name: timestamp_before
+          in: query
+          required: false
+          description: End of price history range (ISO-8601 or Unix timestamp).
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing historical token prices.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TokenPrice'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /prices/ohlc-price-history:
+    get:
+      tags: [Token Prices API]
+      summary: Get OHLC Price History
+      operationId: getOhlcPriceHistory
+      description: >
+        Get OHLC/candlestick data for any token address and time interval. Supports
+        minute-to-month granularity. Also supports LP token valuation across
+        Balancer, Curve Finance, Uniswap, Convex Finance, Yearn, Synthetix, and Aave.
+      parameters:
+        - $ref: '#/components/parameters/ChainId'
+        - name: contract_address
+          in: query
+          required: true
+          description: The token contract address to query OHLC data for.
+          schema:
+            type: string
+        - name: interval
+          in: query
+          required: false
+          description: Candlestick interval.
+          schema:
+            type: string
+            enum: [minute, hour, day, week, month]
+            default: day
+        - name: timestamp_after
+          in: query
+          required: false
+          description: Start of OHLC range (ISO-8601 or Unix timestamp).
+          schema:
+            type: string
+        - name: timestamp_before
+          in: query
+          required: false
+          description: End of OHLC range (ISO-8601 or Unix timestamp).
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing OHLC candlestick data.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OhlcPrice'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ─── SQL Analytics API ────────────────────────────────────────────────────────
+
+  /sql:
+    post:
+      tags: [SQL Analytics API]
+      summary: Execute SQL Query
+      operationId: executeSqlQuery
+      description: >
+        Execute a custom SQL query against Transpose's entire indexed blockchain
+        dataset. Tables are namespaced by chain (e.g., ethereum.nft_sales,
+        polygon.tokens). Supports pagination, parameterized queries, and
+        cross-chain multichain queries. Credits consumed are returned in the
+        X-Credits-Charged response header.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SqlQueryRequest'
+            examples:
+              nft_sales:
+                summary: Recent NFT sales on Ethereum
+                value:
+                  sql: "SELECT * FROM ethereum.nft_sales ORDER BY timestamp DESC LIMIT 10;"
+              token_transfers:
+                summary: Recent USDC transfers
+                value:
+                  sql: "SELECT * FROM ethereum.token_transfers WHERE contract_address = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48' ORDER BY timestamp DESC LIMIT 25;"
+              block_query:
+                summary: Recent blocks
+                value:
+                  sql: "SELECT block_number, timestamp, transaction_count FROM ethereum.blocks ORDER BY block_number DESC LIMIT 5;"
+      responses:
+        '200':
+          description: Successful query response.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+              description: Number of API credits consumed by this query.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SqlQueryResponse'
+        '400':
+          description: Bad request — invalid SQL syntax or unsupported query.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized — missing or invalid API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'

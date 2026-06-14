@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.transpose.io/schemas/sql-query",
+  "title": "SQL Query Request",
+  "description": "Request body for the Transpose SQL Analytics API endpoint.",
+  "type": "object",
+  "properties": {
+    "sql": {
+      "type": "string",
+      "description": "SQL query string against Transpose's indexed blockchain data. Tables are namespaced by chain (e.g., ethereum.nft_sales, polygon.tokens, arbitrum.transactions).",
+      "minLength": 1,
+      "examples": [
+        "SELECT * FROM ethereum.nft_sales ORDER BY timestamp DESC LIMIT 10;",
+        "SELECT contract_address, COUNT(*) AS transfer_count FROM ethereum.token_transfers WHERE timestamp >= '2024-01-01' GROUP BY contract_address ORDER BY transfer_count DESC LIMIT 20;"
+      ]
+    }
+  },
+  "required": ["sql"],
+  "additionalProperties": false
+}

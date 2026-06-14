@@ -1,0 +1,37 @@
+{
+  "description": "Example response from GET /nft/transfers for the BAYC collection",
+  "status": 200,
+  "headers": {
+    "X-Credits-Charged": 1,
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "status": "ok",
+    "results": [
+      {
+        "transaction_hash": "0x5d7b8e0e3f7c2a1b4d6e9f0a2c4b8d1e3f5a7b9c0d2e4f6a8b0c2d4e6f8a0b2",
+        "log_index": 42,
+        "block_number": 18500000,
+        "timestamp": "2023-11-01T14:32:10Z",
+        "contract_address": "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
+        "token_id": "1234",
+        "from_address": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+        "to_address": "0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B",
+        "token_standard": "erc721",
+        "quantity": 1
+      },
+      {
+        "transaction_hash": "0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2",
+        "log_index": 15,
+        "block_number": 18499850,
+        "timestamp": "2023-11-01T13:05:22Z",
+        "contract_address": "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
+        "token_id": "5678",
+        "from_address": "0x0000000000000000000000000000000000000000",
+        "to_address": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+        "token_standard": "erc721",
+        "quantity": 1
+      }
+    ]
+  }
+}

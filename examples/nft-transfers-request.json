@@ -1,0 +1,16 @@
+{
+  "description": "Example request to get NFT transfers for a specific collection on Ethereum",
+  "method": "GET",
+  "url": "https://api.transpose.io/nft/transfers",
+  "headers": {
+    "X-API-KEY": "YOUR_API_KEY"
+  },
+  "queryParameters": {
+    "chain_id": "ethereum",
+    "contract_address": "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
+    "transferred_after": "2023-01-01T00:00:00Z",
+    "transferred_before": "2023-12-31T23:59:59Z",
+    "order": "desc",
+    "limit": 10
+  }
+}

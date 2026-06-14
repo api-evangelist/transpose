@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.transpose.io/schemas/token-transfer",
+  "title": "Token Transfer",
+  "description": "An ERC-20 or ERC-777 fungible token transfer event including mints, sends, and burns.",
+  "type": "object",
+  "properties": {
+    "transaction_hash": {
+      "type": "string",
+      "description": "Hash of the transaction containing this transfer.",
+      "pattern": "^0x[0-9a-fA-F]{64}$"
+    },
+    "log_index": {
+      "type": "integer",
+      "description": "Index of the event log within the transaction.",
+      "minimum": 0
+    },
+    "block_number": {
+      "type": "integer",
+      "description": "Block number containing this transfer.",
+      "minimum": 0
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 timestamp when this transfer occurred."
+    },
+    "contract_address": {
+      "type": "string",
+      "description": "The token contract address.",
+      "pattern": "^0x[0-9a-fA-F]{40}$"
+    },
+    "from_address": {
+      "type": "string",
+      "description": "Sender address. Zero address indicates a mint.",
+      "pattern": "^0x[0-9a-fA-F]{40}$"
+    },
+    "to_address": {
+      "type": "string",
+      "description": "Recipient address. Zero address indicates a burn.",
+      "pattern": "^0x[0-9a-fA-F]{40}$"
+    },
+    "quantity": {
+      "type": "string",
+      "description": "Amount transferred in the token's smallest unit (as string to avoid precision loss)."
+    }
+  },
+  "required": [
+    "transaction_hash",
+    "block_number",
+    "timestamp",
+    "contract_address",
+    "from_address",
+    "to_address",
+    "quantity"
+  ],
+  "additionalProperties": true
+}
