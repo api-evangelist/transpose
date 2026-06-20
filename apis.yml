@@ -1,6 +1,6 @@
 name: Transpose
 description: Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/transpose/refs/heads/main/apis.yml
 created: '2026-06-14'
 modified: '2026-06-14'
@@ -19,7 +19,7 @@ tags:
 apis:
   - name: Transpose Block API
     description: Provides access to low-level blockchain primitives including accounts, blocks, transactions, logs, and traces across supported EVM chains. Enables bulk retrieval of raw settlement-layer data for analytics and indexing use cases.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.transpose.io/
     baseURL: https://api.transpose.io
     tags:
@@ -39,7 +39,7 @@ apis:
         email: ''
   - name: Transpose Token API
     description: Retrieves any token balance, mint, transfer, or burn across ERC-20, ERC-777, and native tokens. Supports historical token transfers, DEX swap queries, and native token transactions across multiple EVM chains including Ethereum, Polygon, and Arbitrum.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.transpose.io/verified-endpoints/token-api/overview/
     baseURL: https://api.transpose.io
     tags:
@@ -60,7 +60,7 @@ apis:
         email: ''
   - name: Transpose NFT API
     description: Provides a complete view of NFT sales, activity, balances, collections, ownership histories, and transfers spanning all NFT exchanges, collections, and standards including ERC-721 and ERC-1155. Supports Ethereum, Polygon, Optimism, Scroll, Arbitrum, Base, and Avalanche chains.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.transpose.io/verified-endpoints/nft-api/routes/transfers/
     baseURL: https://api.transpose.io
     tags:
@@ -82,7 +82,7 @@ apis:
         email: ''
   - name: Transpose ENS API
     description: Provides access to Ethereum Name Service records and transfer history, enabling lookup of ENS domain ownership, resolution records, and historical ENS activity on Ethereum.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.transpose.io/
     baseURL: https://api.transpose.io
     tags:
@@ -101,7 +101,7 @@ apis:
         email: ''
   - name: Transpose Token Prices API
     description: Delivers real-time and historical OHLC price data for any token including LP tokens since genesis. Supports minute-to-month granularity for price series, candlestick analysis, and LP token valuation across Balancer, Curve Finance, Uniswap, Convex Finance, Yearn, Synthetix, and Aave.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.transpose.io/verified-endpoints/token-prices-api/overview/
     baseURL: https://api.transpose.io
     tags:
@@ -121,7 +121,7 @@ apis:
         email: ''
   - name: Transpose SQL Analytics API
     description: Custom SQL query interface against Transpose's indexed blockchain data. Accepts POST requests with SQL queries to enable flexible, ad-hoc analysis of blockchain data across all supported chains and data layers including settlement, asset, and protocol layers.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.transpose.io/
     baseURL: https://api.transpose.io
     tags:
