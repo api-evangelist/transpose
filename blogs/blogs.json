@@ -2,10 +2,11 @@
   "repo": "transpose",
   "feeds": [
     {
-      "source": "https://www.transpose.io/pricing",
-      "error": "URLError"
+      "source": "https://www.transpose.io/blogs",
+      "saved": 0,
+      "error": "SSL TLSV1_ALERT_INTERNAL_ERROR"
     }
   ],
-  "post_count": 0,
-  "fetched": "2026-06-14T20:42:17Z"
+  "fetched": "2026-06-27T13:17:05Z",
+  "post_count": 0
 }

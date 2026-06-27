@@ -143,7 +143,7 @@ common:
     url: https://app.transpose.io
   - type: Documentation
     url: https://docs.transpose.io/
-  - type: Quickstart
+  - type: GettingStarted
     url: https://docs.transpose.io/quickstart/
   - type: Pricing
     url: https://www.transpose.io/pricing
