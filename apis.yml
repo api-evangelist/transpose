@@ -139,6 +139,12 @@ apis:
         url: https://www.transpose.io/
         email: ''
 common:
+  - type: VulnerabilityDisclosure
+    url: security/transpose-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/transpose-domain-security.yml
+  - type: Authentication
+    url: authentication/transpose-authentication.yml
   - type: Portal
     url: https://app.transpose.io
   - type: Documentation
