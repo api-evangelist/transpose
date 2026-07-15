@@ -139,6 +139,8 @@ apis:
         url: https://www.transpose.io/
         email: ''
 common:
+  - type: AgenticAccess
+    url: agentic-access/transpose-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/transpose-vulnerability-disclosure.yml
   - type: DomainSecurity
