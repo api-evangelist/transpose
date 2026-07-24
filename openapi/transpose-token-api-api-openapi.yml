@@ -1,0 +1,479 @@
+openapi: 3.0.3
+info:
+  title: Transpose Block API Token API API
+  description: 'Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Transpose Support
+    url: https://www.transpose.io/
+  license:
+    name: Commercial
+    url: https://www.transpose.io/pricing
+servers:
+- url: https://api.transpose.io
+  description: Transpose production API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Token API
+  description: 'ERC-20, ERC-777, and native token balances, transfers, and DEX swaps.
+
+    '
+paths:
+  /token/tokens:
+    get:
+      tags:
+      - Token API
+      summary: Get Tokens
+      operationId: getTokens
+      description: 'Retrieve ERC-20 and ERC-777 token metadata. Filter by contract address, name, symbol, date created, or owner.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: contract_address
+        in: query
+        required: false
+        description: Filter by token contract address.
+        schema:
+          type: string
+      - name: name
+        in: query
+        required: false
+        description: Filter tokens by name (partial match supported).
+        schema:
+          type: string
+      - name: symbol
+        in: query
+        required: false
+        description: Filter tokens by symbol.
+        schema:
+          type: string
+      - name: owner_address
+        in: query
+        required: false
+        description: Filter tokens by owner address.
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        required: false
+        description: Return tokens created after this date.
+        schema:
+          type: string
+      - name: created_before
+        in: query
+        required: false
+        description: Return tokens created before this date.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing matching tokens.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Token'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /token/transfers:
+    get:
+      tags:
+      - Token API
+      summary: Get Token Transfers
+      operationId: getTokenTransfers
+      description: 'Query all token transfers including mints, sends, and burns across ERC-20 and ERC-777 tokens within a specified date range.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: contract_address
+        in: query
+        required: false
+        description: Filter transfers by token contract address.
+        schema:
+          type: string
+      - name: from_address
+        in: query
+        required: false
+        description: Filter transfers by sender address.
+        schema:
+          type: string
+      - name: to_address
+        in: query
+        required: false
+        description: Filter transfers by recipient address.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/TransferredAfter'
+      - $ref: '#/components/parameters/TransferredBefore'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing token transfers.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TokenTransfer'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /token/swaps:
+    get:
+      tags:
+      - Token API
+      summary: Get Token Swaps
+      operationId: getTokenSwaps
+      description: 'Fetch swap activity across decentralized exchanges including Uniswap, SushiSwap, and others.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: contract_address
+        in: query
+        required: false
+        description: Filter swaps by token contract address.
+        schema:
+          type: string
+      - name: account_address
+        in: query
+        required: false
+        description: Filter swaps by initiating account address.
+        schema:
+          type: string
+      - name: pair_address
+        in: query
+        required: false
+        description: Filter swaps by DEX pair/pool address.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/TransferredAfter'
+      - $ref: '#/components/parameters/TransferredBefore'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing DEX swap events.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TokenSwap'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /token/native-token-transfers:
+    get:
+      tags:
+      - Token API
+      summary: Get Native Token Transfers
+      operationId: getNativeTokenTransfers
+      description: 'Retrieve historical native token (ETH, MATIC, etc.) transfers and account balances across supported chains.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: account_address
+        in: query
+        required: false
+        description: Filter native transfers by account address (sender or receiver).
+        schema:
+          type: string
+      - $ref: '#/components/parameters/TransferredAfter'
+      - $ref: '#/components/parameters/TransferredBefore'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing native token transfers.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NativeTokenTransfer'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /token/owners:
+    get:
+      tags:
+      - Token API
+      summary: Get Token Owners
+      operationId: getTokenOwners
+      description: 'Access token holders and their balances, sorted by amount. Supports historical ownership queries.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: contract_address
+        in: query
+        required: false
+        description: Token contract address to query owners for.
+        schema:
+          type: string
+      - name: owner_address
+        in: query
+        required: false
+        description: Filter by a specific owner address.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing token owners and balances.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        owner_address:
+                          type: string
+                        contract_address:
+                          type: string
+                        quantity:
+                          type: string
+                          description: Token balance in smallest unit.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  parameters:
+    TransferredAfter:
+      name: transferred_after
+      in: query
+      required: false
+      description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
+    ChainId:
+      name: chain_id
+      in: query
+      required: true
+      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
+
+        '
+      schema:
+        type: string
+        example: ethereum
+        enum:
+        - ethereum
+        - polygon
+        - optimism
+        - scroll
+        - arbitrum
+        - base
+        - avalanche
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    TransferredBefore:
+      name: transferred_before
+      in: query
+      required: false
+      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
+  schemas:
+    TokenSwap:
+      type: object
+      description: Represents a DEX swap event.
+      properties:
+        transaction_hash:
+          type: string
+        log_index:
+          type: integer
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        exchange_name:
+          type: string
+        pair_address:
+          type: string
+        from_address:
+          type: string
+        token_in_address:
+          type: string
+        token_out_address:
+          type: string
+        quantity_in:
+          type: string
+        quantity_out:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
+    Token:
+      type: object
+      description: Represents an ERC-20 or ERC-777 fungible token.
+      properties:
+        contract_address:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+        decimals:
+          type: integer
+        total_supply:
+          type: string
+        created_timestamp:
+          type: string
+          format: date-time
+        creator_address:
+          type: string
+    NativeTokenTransfer:
+      type: object
+      description: Represents a native token (ETH, MATIC, etc.) transfer.
+      properties:
+        transaction_hash:
+          type: string
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        from_address:
+          type: string
+        to_address:
+          type: string
+        value:
+          type: string
+          description: Value transferred in wei.
+    TokenTransfer:
+      type: object
+      description: Represents a token transfer event.
+      properties:
+        transaction_hash:
+          type: string
+        log_index:
+          type: integer
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        contract_address:
+          type: string
+        from_address:
+          type: string
+        to_address:
+          type: string
+        quantity:
+          type: string
+          description: Amount transferred (in token's smallest unit).
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: API key obtained from your Transpose team dashboard.

@@ -1,0 +1,537 @@
+openapi: 3.0.3
+info:
+  title: Transpose Block API API
+  description: 'Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Transpose Support
+    url: https://www.transpose.io/
+  license:
+    name: Commercial
+    url: https://www.transpose.io/pricing
+servers:
+- url: https://api.transpose.io
+  description: Transpose production API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Block API
+  description: 'Low-level blockchain primitives including accounts, blocks, transactions, logs, and traces across EVM chains.
+
+    '
+paths:
+  /block/accounts:
+    get:
+      tags:
+      - Block API
+      summary: Get Accounts
+      operationId: getAccounts
+      description: 'Retrieve externally-owned accounts and smart contracts with metadata. Filter by address, creator, or date created.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: address
+        in: query
+        required: false
+        description: Filter by a specific account address.
+        schema:
+          type: string
+      - name: creator_address
+        in: query
+        required: false
+        description: Filter accounts by the address that created them.
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        required: false
+        description: Return accounts created after this date (ISO-8601 or Unix timestamp).
+        schema:
+          type: string
+      - name: created_before
+        in: query
+        required: false
+        description: Return accounts created before this date (ISO-8601 or Unix timestamp).
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing matching accounts.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+              description: Number of API credits consumed by this request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Account'
+        '401':
+          description: Unauthorized — missing or invalid API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /block/blocks:
+    get:
+      tags:
+      - Block API
+      summary: Get Blocks
+      operationId: getBlocks
+      description: 'Retrieve historical blocks with fee calculations. Filter by date or block number range.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: block_number_above
+        in: query
+        required: false
+        description: Return blocks with number greater than or equal to this value.
+        schema:
+          type: integer
+      - name: block_number_below
+        in: query
+        required: false
+        description: Return blocks with number less than or equal to this value.
+        schema:
+          type: integer
+      - name: mined_after
+        in: query
+        required: false
+        description: Return blocks mined after this date (ISO-8601 or Unix timestamp).
+        schema:
+          type: string
+      - name: mined_before
+        in: query
+        required: false
+        description: Return blocks mined before this date (ISO-8601 or Unix timestamp).
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing matching blocks.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Block'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /block/transactions:
+    get:
+      tags:
+      - Block API
+      summary: Get Transactions
+      operationId: getTransactions
+      description: 'Query all transactions with flexible filtering by account, block, contract, date, or transaction hash.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: from_address
+        in: query
+        required: false
+        description: Filter transactions by sender address.
+        schema:
+          type: string
+      - name: to_address
+        in: query
+        required: false
+        description: Filter transactions by recipient address.
+        schema:
+          type: string
+      - name: block_number
+        in: query
+        required: false
+        description: Filter transactions by block number.
+        schema:
+          type: integer
+      - name: transaction_hash
+        in: query
+        required: false
+        description: Retrieve a specific transaction by its hash.
+        schema:
+          type: string
+      - name: timestamp_above
+        in: query
+        required: false
+        description: Return transactions after this timestamp (ISO-8601 or Unix).
+        schema:
+          type: string
+      - name: timestamp_below
+        in: query
+        required: false
+        description: Return transactions before this timestamp (ISO-8601 or Unix).
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing matching transactions.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Transaction'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /block/logs:
+    get:
+      tags:
+      - Block API
+      summary: Get Logs
+      operationId: getLogs
+      description: Retrieve and filter historical smart contract event logs by block or transaction.
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: block_number
+        in: query
+        required: false
+        description: Filter logs by block number.
+        schema:
+          type: integer
+      - name: transaction_hash
+        in: query
+        required: false
+        description: Filter logs by transaction hash.
+        schema:
+          type: string
+      - name: contract_address
+        in: query
+        required: false
+        description: Filter logs by emitting contract address.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing matching logs.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Log'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /block/traces:
+    get:
+      tags:
+      - Block API
+      summary: Get Traces
+      operationId: getTraces
+      description: Retrieve internal transaction traces filtered by account, block, transaction, or contract.
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: from_address
+        in: query
+        required: false
+        description: Filter traces by the calling address.
+        schema:
+          type: string
+      - name: to_address
+        in: query
+        required: false
+        description: Filter traces by the receiving address.
+        schema:
+          type: string
+      - name: block_number
+        in: query
+        required: false
+        description: Filter traces by block number.
+        schema:
+          type: integer
+      - name: transaction_hash
+        in: query
+        required: false
+        description: Filter traces by transaction hash.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing matching traces.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Trace'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Log:
+      type: object
+      description: Represents a smart contract event log.
+      properties:
+        transaction_hash:
+          type: string
+          description: Transaction hash containing this log.
+        log_index:
+          type: integer
+          description: Index of the log within the transaction.
+        block_number:
+          type: integer
+          description: Block number containing this log.
+        timestamp:
+          type: string
+          format: date-time
+        contract_address:
+          type: string
+          description: Address of the contract that emitted this log.
+        topic_0:
+          type: string
+          description: Event signature hash.
+        data:
+          type: string
+          description: Non-indexed log data.
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
+    Transaction:
+      type: object
+      description: Represents a blockchain transaction.
+      properties:
+        transaction_hash:
+          type: string
+          description: The transaction hash.
+        block_number:
+          type: integer
+          description: Block number containing this transaction.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the transaction was included in a block.
+        from_address:
+          type: string
+          description: The sender's address.
+        to_address:
+          type: string
+          description: The recipient's address.
+        value:
+          type: string
+          description: Value transferred in wei.
+        gas_price:
+          type: string
+          description: Gas price in wei.
+        gas_used:
+          type: integer
+          description: Actual gas consumed.
+        status:
+          type: integer
+          description: Transaction status (1 = success, 0 = failure).
+        method_id:
+          type: string
+          description: First 4 bytes of call data identifying the contract method.
+    Trace:
+      type: object
+      description: Represents an internal transaction trace.
+      properties:
+        transaction_hash:
+          type: string
+        trace_index:
+          type: integer
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        from_address:
+          type: string
+        to_address:
+          type: string
+        value:
+          type: string
+          description: Value transferred in wei.
+        call_type:
+          type: string
+          enum:
+          - call
+          - staticcall
+          - delegatecall
+          - create
+          - selfdestruct
+    Block:
+      type: object
+      description: Represents a blockchain block.
+      properties:
+        block_number:
+          type: integer
+          description: The block number.
+        block_hash:
+          type: string
+          description: The block hash.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the block was mined.
+        miner:
+          type: string
+          description: Address of the block miner.
+        transaction_count:
+          type: integer
+          description: Number of transactions in the block.
+        gas_used:
+          type: integer
+          description: Total gas used by all transactions.
+        base_fee_per_gas:
+          type: string
+          description: Base fee per gas in wei (EIP-1559 blocks).
+    Account:
+      type: object
+      description: Represents an externally-owned account or smart contract.
+      properties:
+        address:
+          type: string
+          description: The account's blockchain address.
+        account_type:
+          type: string
+          description: Whether the account is an EOA or smart contract.
+          enum:
+          - externally_owned_account
+          - contract
+        created_timestamp:
+          type: string
+          format: date-time
+          description: When the account was first seen on-chain.
+        creator_address:
+          type: string
+          description: The address that created this contract (if applicable).
+        created_block_number:
+          type: integer
+          description: Block number when the account was created.
+  parameters:
+    ChainId:
+      name: chain_id
+      in: query
+      required: true
+      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
+
+        '
+      schema:
+        type: string
+        example: ethereum
+        enum:
+        - ethereum
+        - polygon
+        - optimism
+        - scroll
+        - arbitrum
+        - base
+        - avalanche
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: API key obtained from your Transpose team dashboard.

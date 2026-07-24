@@ -1,0 +1,255 @@
+openapi: 3.0.3
+info:
+  title: Transpose Block API ENS API API
+  description: 'Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Transpose Support
+    url: https://www.transpose.io/
+  license:
+    name: Commercial
+    url: https://www.transpose.io/pricing
+servers:
+- url: https://api.transpose.io
+  description: Transpose production API
+security:
+- ApiKeyAuth: []
+tags:
+- name: ENS API
+  description: Ethereum Name Service records and transfer history.
+paths:
+  /ens/records:
+    get:
+      tags:
+      - ENS API
+      summary: Get ENS Records
+      operationId: getEnsRecords
+      description: 'Retrieve any ENS record ever created. Filter by account, owner, ENS name, node, registration date, or expiration date.
+
+        '
+      parameters:
+      - name: ens_name
+        in: query
+        required: false
+        description: Look up a specific ENS name (e.g., vitalik.eth).
+        schema:
+          type: string
+          example: vitalik.eth
+      - name: owner_address
+        in: query
+        required: false
+        description: Filter ENS records by owner address.
+        schema:
+          type: string
+      - name: account_address
+        in: query
+        required: false
+        description: Filter ENS records by resolved account address.
+        schema:
+          type: string
+      - name: token_id
+        in: query
+        required: false
+        description: Filter by ENS token ID.
+        schema:
+          type: string
+      - name: registered_after
+        in: query
+        required: false
+        description: Return ENS records registered after this date.
+        schema:
+          type: string
+      - name: registered_before
+        in: query
+        required: false
+        description: Return ENS records registered before this date.
+        schema:
+          type: string
+      - name: expires_after
+        in: query
+        required: false
+        description: Return ENS records expiring after this date.
+        schema:
+          type: string
+      - name: expires_before
+        in: query
+        required: false
+        description: Return ENS records expiring before this date.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing ENS records.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EnsRecord'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /ens/transfers:
+    get:
+      tags:
+      - ENS API
+      summary: Get ENS Transfers
+      operationId: getEnsTransfers
+      description: 'Retrieve all historical and live ENS name transfers and registrations. Filter by ENS name or token ID.
+
+        '
+      parameters:
+      - name: ens_name
+        in: query
+        required: false
+        description: Filter transfers by ENS name.
+        schema:
+          type: string
+      - name: token_id
+        in: query
+        required: false
+        description: Filter transfers by ENS token ID.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/TransferredAfter'
+      - $ref: '#/components/parameters/TransferredBefore'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing ENS transfer events.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EnsTransfer'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  parameters:
+    TransferredAfter:
+      name: transferred_after
+      in: query
+      required: false
+      description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    TransferredBefore:
+      name: transferred_before
+      in: query
+      required: false
+      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
+  schemas:
+    EnsTransfer:
+      type: object
+      description: Represents an ENS name transfer or registration event.
+      properties:
+        transaction_hash:
+          type: string
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        ens_name:
+          type: string
+        from_address:
+          type: string
+        to_address:
+          type: string
+    EnsRecord:
+      type: object
+      description: Represents an ENS domain record.
+      properties:
+        ens_name:
+          type: string
+          description: The ENS domain name (e.g., vitalik.eth).
+        node:
+          type: string
+          description: The namehash of the ENS name.
+        token_id:
+          type: string
+        owner_address:
+          type: string
+        resolved_address:
+          type: string
+        registration_timestamp:
+          type: string
+          format: date-time
+        expiration_timestamp:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: API key obtained from your Transpose team dashboard.

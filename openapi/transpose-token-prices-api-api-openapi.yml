@@ -1,0 +1,286 @@
+openapi: 3.0.3
+info:
+  title: Transpose Block API Token Prices API API
+  description: 'Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Transpose Support
+    url: https://www.transpose.io/
+  license:
+    name: Commercial
+    url: https://www.transpose.io/pricing
+servers:
+- url: https://api.transpose.io
+  description: Transpose production API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Token Prices API
+  description: 'Real-time and historical OHLC price data for any token including LP tokens.
+
+    '
+paths:
+  /prices/token-price:
+    get:
+      tags:
+      - Token Prices API
+      summary: Get Token Price
+      operationId: getTokenPrice
+      description: 'Access up-to-the-minute pricing details for any token by contract address. Returns current price in USD and ETH.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: contract_address
+        in: query
+        required: true
+        description: The token contract address to query price for.
+        schema:
+          type: string
+          example: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'
+      responses:
+        '200':
+          description: Successful response containing current token price.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TokenPrice'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /prices/token-price-history:
+    get:
+      tags:
+      - Token Prices API
+      summary: Get Token Price History
+      operationId: getTokenPriceHistory
+      description: 'Gain access to a comprehensive token price series. Download data in customizable formats for any token address within a specified time range.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: contract_address
+        in: query
+        required: true
+        description: The token contract address to query price history for.
+        schema:
+          type: string
+      - name: timestamp_after
+        in: query
+        required: false
+        description: Start of price history range (ISO-8601 or Unix timestamp).
+        schema:
+          type: string
+      - name: timestamp_before
+        in: query
+        required: false
+        description: End of price history range (ISO-8601 or Unix timestamp).
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing historical token prices.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TokenPrice'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /prices/ohlc-price-history:
+    get:
+      tags:
+      - Token Prices API
+      summary: Get OHLC Price History
+      operationId: getOhlcPriceHistory
+      description: 'Get OHLC/candlestick data for any token address and time interval. Supports minute-to-month granularity. Also supports LP token valuation across Balancer, Curve Finance, Uniswap, Convex Finance, Yearn, Synthetix, and Aave.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/ChainId'
+      - name: contract_address
+        in: query
+        required: true
+        description: The token contract address to query OHLC data for.
+        schema:
+          type: string
+      - name: interval
+        in: query
+        required: false
+        description: Candlestick interval.
+        schema:
+          type: string
+          enum:
+          - minute
+          - hour
+          - day
+          - week
+          - month
+          default: day
+      - name: timestamp_after
+        in: query
+        required: false
+        description: Start of OHLC range (ISO-8601 or Unix timestamp).
+        schema:
+          type: string
+      - name: timestamp_before
+        in: query
+        required: false
+        description: End of OHLC range (ISO-8601 or Unix timestamp).
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          description: Successful response containing OHLC candlestick data.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OhlcPrice'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    OhlcPrice:
+      type: object
+      description: Represents OHLC candlestick price data for a token.
+      properties:
+        contract_address:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        interval:
+          type: string
+          description: Candlestick interval (e.g., minute, hour, day).
+        open_usd:
+          type: number
+        high_usd:
+          type: number
+        low_usd:
+          type: number
+        close_usd:
+          type: number
+        volume_usd:
+          type: number
+    TokenPrice:
+      type: object
+      description: Represents a point-in-time token price.
+      properties:
+        contract_address:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        price_usd:
+          type: number
+          description: Token price in USD.
+        price_eth:
+          type: number
+          description: Token price in ETH.
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
+  parameters:
+    ChainId:
+      name: chain_id
+      in: query
+      required: true
+      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
+
+        '
+      schema:
+        type: string
+        example: ethereum
+        enum:
+        - ethereum
+        - polygon
+        - optimism
+        - scroll
+        - arbitrum
+        - base
+        - avalanche
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: API key obtained from your Transpose team dashboard.

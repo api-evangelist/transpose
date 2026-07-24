@@ -1,0 +1,127 @@
+openapi: 3.0.3
+info:
+  title: Transpose Block API SQL Analytics API API
+  description: 'Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Transpose Support
+    url: https://www.transpose.io/
+  license:
+    name: Commercial
+    url: https://www.transpose.io/pricing
+servers:
+- url: https://api.transpose.io
+  description: Transpose production API
+security:
+- ApiKeyAuth: []
+tags:
+- name: SQL Analytics API
+  description: 'Custom SQL query interface against Transpose''s entire indexed blockchain dataset.
+
+    '
+paths:
+  /sql:
+    post:
+      tags:
+      - SQL Analytics API
+      summary: Execute SQL Query
+      operationId: executeSqlQuery
+      description: 'Execute a custom SQL query against Transpose''s entire indexed blockchain dataset. Tables are namespaced by chain (e.g., ethereum.nft_sales, polygon.tokens). Supports pagination, parameterized queries, and cross-chain multichain queries. Credits consumed are returned in the X-Credits-Charged response header.
+
+        '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SqlQueryRequest'
+            examples:
+              nft_sales:
+                summary: Recent NFT sales on Ethereum
+                value:
+                  sql: SELECT * FROM ethereum.nft_sales ORDER BY timestamp DESC LIMIT 10;
+              token_transfers:
+                summary: Recent USDC transfers
+                value:
+                  sql: SELECT * FROM ethereum.token_transfers WHERE contract_address = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48' ORDER BY timestamp DESC LIMIT 25;
+              block_query:
+                summary: Recent blocks
+                value:
+                  sql: SELECT block_number, timestamp, transaction_count FROM ethereum.blocks ORDER BY block_number DESC LIMIT 5;
+      responses:
+        '200':
+          description: Successful query response.
+          headers:
+            X-Credits-Charged:
+              schema:
+                type: integer
+              description: Number of API credits consumed by this query.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SqlQueryResponse'
+        '400':
+          description: Bad request — invalid SQL syntax or unsupported query.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized — missing or invalid API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
+    SqlQueryRequest:
+      type: object
+      required:
+      - sql
+      properties:
+        sql:
+          type: string
+          description: 'SQL query against Transpose''s indexed blockchain data. Tables are namespaced by chain (e.g., ethereum.nft_sales, polygon.tokens).
+
+            '
+          example: SELECT * FROM ethereum.nft_sales ORDER BY timestamp DESC LIMIT 10;
+    SqlQueryResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Query status.
+        results:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+          description: Array of result rows as key-value objects.
+        columns:
+          type: array
+          items:
+            type: string
+          description: Column names of the result set.
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: API key obtained from your Transpose team dashboard.
