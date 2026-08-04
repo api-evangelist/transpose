@@ -1,0 +1,24 @@
+{
+  "provider": "transpose",
+  "sources": [
+    "transpose-block-api-api-openapi.yml",
+    "transpose-ens-api-api-openapi.yml",
+    "transpose-nft-api-api-openapi.yml",
+    "transpose-sql-analytics-api-api-openapi.yml",
+    "transpose-token-api-api-openapi.yml",
+    "transpose-token-prices-api-api-openapi.yml"
+  ],
+  "outputs": [
+    "transpose-block-api-api-openapi.yml",
+    "transpose-ens-api-api-openapi.yml",
+    "transpose-nft-api-api-openapi.yml",
+    "transpose-sql-analytics-api-api-openapi.yml",
+    "transpose-token-api-api-openapi.yml",
+    "transpose-token-prices-api-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
