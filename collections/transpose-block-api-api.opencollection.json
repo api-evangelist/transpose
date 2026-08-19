@@ -1,0 +1,307 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Transpose Block API API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Block API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/block/accounts",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "address",
+                "value": "",
+                "type": "query",
+                "description": "Filter by a specific account address."
+              },
+              {
+                "name": "creator_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter accounts by the address that created them."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "Return accounts created after this date (ISO-8601 or Unix timestamp)."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "Return accounts created before this date (ISO-8601 or Unix timestamp)."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Retrieve externally-owned accounts and smart contracts with metadata. Filter by address, creator, or date created.\n"
+        },
+        {
+          "info": {
+            "name": "Get Blocks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/block/blocks",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "block_number_above",
+                "value": "",
+                "type": "query",
+                "description": "Return blocks with number greater than or equal to this value."
+              },
+              {
+                "name": "block_number_below",
+                "value": "",
+                "type": "query",
+                "description": "Return blocks with number less than or equal to this value."
+              },
+              {
+                "name": "mined_after",
+                "value": "",
+                "type": "query",
+                "description": "Return blocks mined after this date (ISO-8601 or Unix timestamp)."
+              },
+              {
+                "name": "mined_before",
+                "value": "",
+                "type": "query",
+                "description": "Return blocks mined before this date (ISO-8601 or Unix timestamp)."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Retrieve historical blocks with fee calculations. Filter by date or block number range.\n"
+        },
+        {
+          "info": {
+            "name": "Get Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/block/transactions",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "from_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter transactions by sender address."
+              },
+              {
+                "name": "to_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter transactions by recipient address."
+              },
+              {
+                "name": "block_number",
+                "value": "",
+                "type": "query",
+                "description": "Filter transactions by block number."
+              },
+              {
+                "name": "transaction_hash",
+                "value": "",
+                "type": "query",
+                "description": "Retrieve a specific transaction by its hash."
+              },
+              {
+                "name": "timestamp_above",
+                "value": "",
+                "type": "query",
+                "description": "Return transactions after this timestamp (ISO-8601 or Unix)."
+              },
+              {
+                "name": "timestamp_below",
+                "value": "",
+                "type": "query",
+                "description": "Return transactions before this timestamp (ISO-8601 or Unix)."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Query all transactions with flexible filtering by account, block, contract, date, or transaction hash.\n"
+        },
+        {
+          "info": {
+            "name": "Get Logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/block/logs",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "block_number",
+                "value": "",
+                "type": "query",
+                "description": "Filter logs by block number."
+              },
+              {
+                "name": "transaction_hash",
+                "value": "",
+                "type": "query",
+                "description": "Filter logs by transaction hash."
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter logs by emitting contract address."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Retrieve and filter historical smart contract event logs by block or transaction."
+        },
+        {
+          "info": {
+            "name": "Get Traces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/block/traces",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "from_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter traces by the calling address."
+              },
+              {
+                "name": "to_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter traces by the receiving address."
+              },
+              {
+                "name": "block_number",
+                "value": "",
+                "type": "query",
+                "description": "Filter traces by block number."
+              },
+              {
+                "name": "transaction_hash",
+                "value": "",
+                "type": "query",
+                "description": "Filter traces by transaction hash."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Retrieve internal transaction traces filtered by account, block, transaction, or contract."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

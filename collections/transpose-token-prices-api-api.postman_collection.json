@@ -1,0 +1,658 @@
+{
+  "item": [
+    {
+      "id": "13db2f84-3c27-4c6a-8aa4-0667c669a495",
+      "name": "Token Prices API",
+      "description": {
+        "content": "Real-time and historical OHLC price data for any token including LP tokens.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4782665e-2b14-4a90-a397-eeb123d3d0e9",
+          "name": "Get Token Price",
+          "request": {
+            "name": "Get Token Price",
+            "description": {
+              "content": "Access up-to-the-minute pricing details for any token by contract address. Returns current price in USD and ETH.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "prices",
+                "token-price"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "chain_id",
+                  "value": "<string>",
+                  "description": "(Required) A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "contract_address",
+                  "value": "<string>",
+                  "description": "(Required) The token contract address to query price for."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b60ba5b7-b376-4653-b074-a8835d6f1fae",
+              "name": "Successful response containing current token price.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prices",
+                    "token-price"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "contract_address",
+                      "value": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Credits-Charged",
+                  "value": "4814",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": [\n    {\n      \"contract_address\": \"string\",\n      \"timestamp\": \"1950-05-24T10:34:04.027Z\",\n      \"price_usd\": 4592.65146285735,\n      \"price_eth\": 9879.994673973484\n    },\n    {\n      \"contract_address\": \"string\",\n      \"timestamp\": \"1978-03-23T13:24:26.803Z\",\n      \"price_usd\": 9231.901352430516,\n      \"price_eth\": 1343.4996821884426\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f5cfde8e-70d3-4f82-a045-b1691570faa5",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prices",
+                    "token-price"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "contract_address",
+                      "value": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "be42555d-31a3-47be-bd11-7d7c53f46769",
+          "name": "Get Token Price History",
+          "request": {
+            "name": "Get Token Price History",
+            "description": {
+              "content": "Gain access to a comprehensive token price series. Download data in customizable formats for any token address within a specified time range.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "prices",
+                "token-price-history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "chain_id",
+                  "value": "<string>",
+                  "description": "(Required) A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "contract_address",
+                  "value": "<string>",
+                  "description": "(Required) The token contract address to query price history for."
+                },
+                {
+                  "disabled": false,
+                  "key": "timestamp_after",
+                  "value": "<string>",
+                  "description": "Start of price history range (ISO-8601 or Unix timestamp)."
+                },
+                {
+                  "disabled": false,
+                  "key": "timestamp_before",
+                  "value": "<string>",
+                  "description": "End of price history range (ISO-8601 or Unix timestamp)."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort direction for results."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Maximum number of results to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6c69f88a-96bc-4ad0-a7ad-c500463ec968",
+              "name": "Successful response containing historical token prices.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prices",
+                    "token-price-history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "contract_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timestamp_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timestamp_before",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Credits-Charged",
+                  "value": "4814",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": [\n    {\n      \"contract_address\": \"string\",\n      \"timestamp\": \"1950-05-24T10:34:04.027Z\",\n      \"price_usd\": 4592.65146285735,\n      \"price_eth\": 9879.994673973484\n    },\n    {\n      \"contract_address\": \"string\",\n      \"timestamp\": \"1978-03-23T13:24:26.803Z\",\n      \"price_usd\": 9231.901352430516,\n      \"price_eth\": 1343.4996821884426\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b58fa822-0697-4272-a666-8e8d74fcbf06",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prices",
+                    "token-price-history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "contract_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timestamp_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timestamp_before",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "74c8440a-3f07-4045-94a6-b758fe2d5550",
+          "name": "Get OHLC Price History",
+          "request": {
+            "name": "Get OHLC Price History",
+            "description": {
+              "content": "Get OHLC/candlestick data for any token address and time interval. Supports minute-to-month granularity. Also supports LP token valuation across Balancer, Curve Finance, Uniswap, Convex Finance, Yearn, Synthetix, and Aave.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "prices",
+                "ohlc-price-history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "chain_id",
+                  "value": "<string>",
+                  "description": "(Required) A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "contract_address",
+                  "value": "<string>",
+                  "description": "(Required) The token contract address to query OHLC data for."
+                },
+                {
+                  "disabled": false,
+                  "key": "interval",
+                  "value": "day",
+                  "description": "Candlestick interval."
+                },
+                {
+                  "disabled": false,
+                  "key": "timestamp_after",
+                  "value": "<string>",
+                  "description": "Start of OHLC range (ISO-8601 or Unix timestamp)."
+                },
+                {
+                  "disabled": false,
+                  "key": "timestamp_before",
+                  "value": "<string>",
+                  "description": "End of OHLC range (ISO-8601 or Unix timestamp)."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort direction for results."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Maximum number of results to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "090a65cf-cd6e-43b6-bc56-c8f19ebfde79",
+              "name": "Successful response containing OHLC candlestick data.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prices",
+                    "ohlc-price-history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "contract_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "interval",
+                      "value": "day"
+                    },
+                    {
+                      "key": "timestamp_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timestamp_before",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Credits-Charged",
+                  "value": "4814",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": [\n    {\n      \"contract_address\": \"string\",\n      \"timestamp\": \"1964-10-06T22:27:31.941Z\",\n      \"interval\": \"string\",\n      \"open_usd\": 5000.460408237469,\n      \"high_usd\": 7357.130700964189,\n      \"low_usd\": 5367.553103212408,\n      \"close_usd\": 8321.539102924906,\n      \"volume_usd\": 7439.947222805953\n    },\n    {\n      \"contract_address\": \"string\",\n      \"timestamp\": \"2021-04-09T03:17:27.883Z\",\n      \"interval\": \"string\",\n      \"open_usd\": 872.3879008688551,\n      \"high_usd\": 1687.6943328625393,\n      \"low_usd\": 2625.2555637882224,\n      \"close_usd\": 9805.875650566242,\n      \"volume_usd\": 8908.283103728145\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31292539-167d-4ffb-8395-2f2b592b15f2",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "prices",
+                    "ohlc-price-history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "contract_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "interval",
+                      "value": "day"
+                    },
+                    {
+                      "key": "timestamp_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timestamp_before",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.transpose.io",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "c40da229-c76d-4568-9a8c-2570c1f52030",
+    "name": "Transpose Block API Token Prices API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.\n\n\nContact Support:\n Name: Transpose Support",
+      "type": "text/plain"
+    }
+  }
+}

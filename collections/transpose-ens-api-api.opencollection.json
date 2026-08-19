@@ -1,0 +1,148 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Transpose Block API ENS API API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ENS API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get ENS Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/ens/records",
+            "params": [
+              {
+                "name": "ens_name",
+                "value": "",
+                "type": "query",
+                "description": "Look up a specific ENS name (e.g., vitalik.eth)."
+              },
+              {
+                "name": "owner_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter ENS records by owner address."
+              },
+              {
+                "name": "account_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter ENS records by resolved account address."
+              },
+              {
+                "name": "token_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by ENS token ID."
+              },
+              {
+                "name": "registered_after",
+                "value": "",
+                "type": "query",
+                "description": "Return ENS records registered after this date."
+              },
+              {
+                "name": "registered_before",
+                "value": "",
+                "type": "query",
+                "description": "Return ENS records registered before this date."
+              },
+              {
+                "name": "expires_after",
+                "value": "",
+                "type": "query",
+                "description": "Return ENS records expiring after this date."
+              },
+              {
+                "name": "expires_before",
+                "value": "",
+                "type": "query",
+                "description": "Return ENS records expiring before this date."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Retrieve any ENS record ever created. Filter by account, owner, ENS name, node, registration date, or expiration date.\n"
+        },
+        {
+          "info": {
+            "name": "Get ENS Transfers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/ens/transfers",
+            "params": [
+              {
+                "name": "ens_name",
+                "value": "",
+                "type": "query",
+                "description": "Filter transfers by ENS name."
+              },
+              {
+                "name": "token_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter transfers by ENS token ID."
+              },
+              {
+                "name": "transferred_after",
+                "value": "",
+                "type": "query",
+                "description": "The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.\n"
+              },
+              {
+                "name": "transferred_before",
+                "value": "",
+                "type": "query",
+                "description": "The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.\n"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Retrieve all historical and live ENS name transfers and registrations. Filter by ENS name or token ID.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

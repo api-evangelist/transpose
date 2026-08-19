@@ -1,0 +1,155 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Transpose Block API Token Prices API API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Token Prices API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Token Price",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/prices/token-price",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "The token contract address to query price for."
+              }
+            ]
+          },
+          "docs": "Access up-to-the-minute pricing details for any token by contract address. Returns current price in USD and ETH.\n"
+        },
+        {
+          "info": {
+            "name": "Get Token Price History",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/prices/token-price-history",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "The token contract address to query price history for."
+              },
+              {
+                "name": "timestamp_after",
+                "value": "",
+                "type": "query",
+                "description": "Start of price history range (ISO-8601 or Unix timestamp)."
+              },
+              {
+                "name": "timestamp_before",
+                "value": "",
+                "type": "query",
+                "description": "End of price history range (ISO-8601 or Unix timestamp)."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Gain access to a comprehensive token price series. Download data in customizable formats for any token address within a specified time range.\n"
+        },
+        {
+          "info": {
+            "name": "Get OHLC Price History",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/prices/ohlc-price-history",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "The token contract address to query OHLC data for."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Candlestick interval."
+              },
+              {
+                "name": "timestamp_after",
+                "value": "",
+                "type": "query",
+                "description": "Start of OHLC range (ISO-8601 or Unix timestamp)."
+              },
+              {
+                "name": "timestamp_before",
+                "value": "",
+                "type": "query",
+                "description": "End of OHLC range (ISO-8601 or Unix timestamp)."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Get OHLC/candlestick data for any token address and time interval. Supports minute-to-month granularity. Also supports LP token valuation across Balancer, Curve Finance, Uniswap, Convex Finance, Yearn, Synthetix, and Aave.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

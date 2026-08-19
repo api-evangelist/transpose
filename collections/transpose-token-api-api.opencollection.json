@@ -1,0 +1,307 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Transpose Block API Token API API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Token API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/token/tokens",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter by token contract address."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter tokens by name (partial match supported)."
+              },
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Filter tokens by symbol."
+              },
+              {
+                "name": "owner_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter tokens by owner address."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "Return tokens created after this date."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "Return tokens created before this date."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Retrieve ERC-20 and ERC-777 token metadata. Filter by contract address, name, symbol, date created, or owner.\n"
+        },
+        {
+          "info": {
+            "name": "Get Token Transfers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/token/transfers",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter transfers by token contract address."
+              },
+              {
+                "name": "from_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter transfers by sender address."
+              },
+              {
+                "name": "to_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter transfers by recipient address."
+              },
+              {
+                "name": "transferred_after",
+                "value": "",
+                "type": "query",
+                "description": "The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.\n"
+              },
+              {
+                "name": "transferred_before",
+                "value": "",
+                "type": "query",
+                "description": "The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.\n"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Query all token transfers including mints, sends, and burns across ERC-20 and ERC-777 tokens within a specified date range.\n"
+        },
+        {
+          "info": {
+            "name": "Get Token Swaps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/token/swaps",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter swaps by token contract address."
+              },
+              {
+                "name": "account_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter swaps by initiating account address."
+              },
+              {
+                "name": "pair_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter swaps by DEX pair/pool address."
+              },
+              {
+                "name": "transferred_after",
+                "value": "",
+                "type": "query",
+                "description": "The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.\n"
+              },
+              {
+                "name": "transferred_before",
+                "value": "",
+                "type": "query",
+                "description": "The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.\n"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Fetch swap activity across decentralized exchanges including Uniswap, SushiSwap, and others.\n"
+        },
+        {
+          "info": {
+            "name": "Get Native Token Transfers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/token/native-token-transfers",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "account_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter native transfers by account address (sender or receiver)."
+              },
+              {
+                "name": "transferred_after",
+                "value": "",
+                "type": "query",
+                "description": "The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.\n"
+              },
+              {
+                "name": "transferred_before",
+                "value": "",
+                "type": "query",
+                "description": "The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.\n"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Retrieve historical native token (ETH, MATIC, etc.) transfers and account balances across supported chains.\n"
+        },
+        {
+          "info": {
+            "name": "Get Token Owners",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/token/owners",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "Token contract address to query owners for."
+              },
+              {
+                "name": "owner_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter by a specific owner address."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Access token holders and their balances, sorted by amount. Supports historical ownership queries.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

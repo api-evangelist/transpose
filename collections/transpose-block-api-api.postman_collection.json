@@ -1,0 +1,1291 @@
+{
+  "item": [
+    {
+      "id": "8d9cf872-27c6-4aa3-97a4-6e8fb94b9566",
+      "name": "Block API",
+      "description": {
+        "content": "Low-level blockchain primitives including accounts, blocks, transactions, logs, and traces across EVM chains.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f63adab1-1d8b-441f-8c3d-f0d69edb334a",
+          "name": "Get Accounts",
+          "request": {
+            "name": "Get Accounts",
+            "description": {
+              "content": "Retrieve externally-owned accounts and smart contracts with metadata. Filter by address, creator, or date created.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "block",
+                "accounts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "chain_id",
+                  "value": "<string>",
+                  "description": "(Required) A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "address",
+                  "value": "<string>",
+                  "description": "Filter by a specific account address."
+                },
+                {
+                  "disabled": false,
+                  "key": "creator_address",
+                  "value": "<string>",
+                  "description": "Filter accounts by the address that created them."
+                },
+                {
+                  "disabled": false,
+                  "key": "created_after",
+                  "value": "<string>",
+                  "description": "Return accounts created after this date (ISO-8601 or Unix timestamp)."
+                },
+                {
+                  "disabled": false,
+                  "key": "created_before",
+                  "value": "<string>",
+                  "description": "Return accounts created before this date (ISO-8601 or Unix timestamp)."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort direction for results."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Maximum number of results to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1e9ad08f-6a88-4eef-81f1-8671a971ffc5",
+              "name": "Successful response containing matching accounts.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "block",
+                    "accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "creator_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Number of API credits consumed by this request.",
+                  "key": "X-Credits-Charged",
+                  "value": "4168"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": [\n    {\n      \"address\": \"string\",\n      \"account_type\": \"externally_owned_account\",\n      \"created_timestamp\": \"2025-05-03T08:32:48.596Z\",\n      \"creator_address\": \"string\",\n      \"created_block_number\": 6086\n    },\n    {\n      \"address\": \"string\",\n      \"account_type\": \"externally_owned_account\",\n      \"created_timestamp\": \"1955-04-09T22:25:31.603Z\",\n      \"creator_address\": \"string\",\n      \"created_block_number\": 2078\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6fcde8d7-c440-4898-9c31-15bf116deac6",
+              "name": "Unauthorized — missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "block",
+                    "accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "creator_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b69ab180-4151-4de4-93ec-ae050495caef",
+              "name": "Rate limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "block",
+                    "accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "creator_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "70a97ef5-e8c1-4508-8de5-5368ffa8c759",
+          "name": "Get Blocks",
+          "request": {
+            "name": "Get Blocks",
+            "description": {
+              "content": "Retrieve historical blocks with fee calculations. Filter by date or block number range.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "block",
+                "blocks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "chain_id",
+                  "value": "<string>",
+                  "description": "(Required) A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "block_number_above",
+                  "value": "<integer>",
+                  "description": "Return blocks with number greater than or equal to this value."
+                },
+                {
+                  "disabled": false,
+                  "key": "block_number_below",
+                  "value": "<integer>",
+                  "description": "Return blocks with number less than or equal to this value."
+                },
+                {
+                  "disabled": false,
+                  "key": "mined_after",
+                  "value": "<string>",
+                  "description": "Return blocks mined after this date (ISO-8601 or Unix timestamp)."
+                },
+                {
+                  "disabled": false,
+                  "key": "mined_before",
+                  "value": "<string>",
+                  "description": "Return blocks mined before this date (ISO-8601 or Unix timestamp)."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort direction for results."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Maximum number of results to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e88af914-3133-4e61-9069-92e798d47b97",
+              "name": "Successful response containing matching blocks.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "block",
+                    "blocks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "block_number_above",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "block_number_below",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "mined_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mined_before",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Credits-Charged",
+                  "value": "4168",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": [\n    {\n      \"block_number\": 3957,\n      \"block_hash\": \"string\",\n      \"timestamp\": \"1970-02-10T21:32:08.498Z\",\n      \"miner\": \"string\",\n      \"transaction_count\": 9465,\n      \"gas_used\": 4415,\n      \"base_fee_per_gas\": \"string\"\n    },\n    {\n      \"block_number\": 9209,\n      \"block_hash\": \"string\",\n      \"timestamp\": \"2018-06-30T17:46:23.723Z\",\n      \"miner\": \"string\",\n      \"transaction_count\": 3476,\n      \"gas_used\": 412,\n      \"base_fee_per_gas\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3135504f-ee93-4977-86d1-c3ce301cc20e",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "block",
+                    "blocks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "block_number_above",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "block_number_below",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "mined_after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mined_before",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "22a0cfe5-7611-498a-86e0-8a71bdc94d84",
+          "name": "Get Transactions",
+          "request": {
+            "name": "Get Transactions",
+            "description": {
+              "content": "Query all transactions with flexible filtering by account, block, contract, date, or transaction hash.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "block",
+                "transactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "chain_id",
+                  "value": "<string>",
+                  "description": "(Required) A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "from_address",
+                  "value": "<string>",
+                  "description": "Filter transactions by sender address."
+                },
+                {
+                  "disabled": false,
+                  "key": "to_address",
+                  "value": "<string>",
+                  "description": "Filter transactions by recipient address."
+                },
+                {
+                  "disabled": false,
+                  "key": "block_number",
+                  "value": "<integer>",
+                  "description": "Filter transactions by block number."
+                },
+                {
+                  "disabled": false,
+                  "key": "transaction_hash",
+                  "value": "<string>",
+                  "description": "Retrieve a specific transaction by its hash."
+                },
+                {
+                  "disabled": false,
+                  "key": "timestamp_above",
+                  "value": "<string>",
+                  "description": "Return transactions after this timestamp (ISO-8601 or Unix)."
+                },
+                {
+                  "disabled": false,
+                  "key": "timestamp_below",
+                  "value": "<string>",
+                  "description": "Return transactions before this timestamp (ISO-8601 or Unix)."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort direction for results."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Maximum number of results to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bd92d3df-1259-4e38-9948-a5d415b19b15",
+              "name": "Successful response containing matching transactions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "block",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "from_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "block_number",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "transaction_hash",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timestamp_above",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timestamp_below",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Credits-Charged",
+                  "value": "4168",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": [\n    {\n      \"transaction_hash\": \"string\",\n      \"block_number\": 6690,\n      \"timestamp\": \"1994-11-12T13:25:28.644Z\",\n      \"from_address\": \"string\",\n      \"to_address\": \"string\",\n      \"value\": \"string\",\n      \"gas_price\": \"string\",\n      \"gas_used\": 7744,\n      \"status\": 2529,\n      \"method_id\": \"string\"\n    },\n    {\n      \"transaction_hash\": \"string\",\n      \"block_number\": 5887,\n      \"timestamp\": \"1947-06-03T21:57:36.736Z\",\n      \"from_address\": \"string\",\n      \"to_address\": \"string\",\n      \"value\": \"string\",\n      \"gas_price\": \"string\",\n      \"gas_used\": 6004,\n      \"status\": 667,\n      \"method_id\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a51ece7d-5380-4992-8a1c-23c0bd0af73a",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "block",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "from_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "block_number",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "transaction_hash",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timestamp_above",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timestamp_below",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3e1fb28c-fc9f-4cff-9322-942363729fad",
+          "name": "Get Logs",
+          "request": {
+            "name": "Get Logs",
+            "description": {
+              "content": "Retrieve and filter historical smart contract event logs by block or transaction.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "block",
+                "logs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "chain_id",
+                  "value": "<string>",
+                  "description": "(Required) A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "block_number",
+                  "value": "<integer>",
+                  "description": "Filter logs by block number."
+                },
+                {
+                  "disabled": false,
+                  "key": "transaction_hash",
+                  "value": "<string>",
+                  "description": "Filter logs by transaction hash."
+                },
+                {
+                  "disabled": false,
+                  "key": "contract_address",
+                  "value": "<string>",
+                  "description": "Filter logs by emitting contract address."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort direction for results."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Maximum number of results to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "902071db-d99b-4873-bd61-7cdade0a9c2f",
+              "name": "Successful response containing matching logs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "block",
+                    "logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "block_number",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "transaction_hash",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contract_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Credits-Charged",
+                  "value": "4168",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": [\n    {\n      \"transaction_hash\": \"string\",\n      \"log_index\": 2453,\n      \"block_number\": 2877,\n      \"timestamp\": \"1980-11-22T06:09:04.165Z\",\n      \"contract_address\": \"string\",\n      \"topic_0\": \"string\",\n      \"data\": \"string\"\n    },\n    {\n      \"transaction_hash\": \"string\",\n      \"log_index\": 3388,\n      \"block_number\": 812,\n      \"timestamp\": \"1998-12-10T09:38:49.743Z\",\n      \"contract_address\": \"string\",\n      \"topic_0\": \"string\",\n      \"data\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f6681f5-dd5e-47a5-990f-599f32595334",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "block",
+                    "logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "block_number",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "transaction_hash",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "contract_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "55847f70-f95a-4a45-87c6-77d9881906ca",
+          "name": "Get Traces",
+          "request": {
+            "name": "Get Traces",
+            "description": {
+              "content": "Retrieve internal transaction traces filtered by account, block, transaction, or contract.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "block",
+                "traces"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "chain_id",
+                  "value": "<string>",
+                  "description": "(Required) A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "from_address",
+                  "value": "<string>",
+                  "description": "Filter traces by the calling address."
+                },
+                {
+                  "disabled": false,
+                  "key": "to_address",
+                  "value": "<string>",
+                  "description": "Filter traces by the receiving address."
+                },
+                {
+                  "disabled": false,
+                  "key": "block_number",
+                  "value": "<integer>",
+                  "description": "Filter traces by block number."
+                },
+                {
+                  "disabled": false,
+                  "key": "transaction_hash",
+                  "value": "<string>",
+                  "description": "Filter traces by transaction hash."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "desc",
+                  "description": "Sort direction for results."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Maximum number of results to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d2f39997-001c-4369-9711-9608eed370d2",
+              "name": "Successful response containing matching traces.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "block",
+                    "traces"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "from_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "block_number",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "transaction_hash",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "X-Credits-Charged",
+                  "value": "4168",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": [\n    {\n      \"transaction_hash\": \"string\",\n      \"trace_index\": 5718,\n      \"block_number\": 886,\n      \"timestamp\": \"1994-06-12T07:03:45.146Z\",\n      \"from_address\": \"string\",\n      \"to_address\": \"string\",\n      \"value\": \"string\",\n      \"call_type\": \"create\"\n    },\n    {\n      \"transaction_hash\": \"string\",\n      \"trace_index\": 6652,\n      \"block_number\": 390,\n      \"timestamp\": \"1991-05-28T07:02:13.349Z\",\n      \"from_address\": \"string\",\n      \"to_address\": \"string\",\n      \"value\": \"string\",\n      \"call_type\": \"call\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "264f78d5-68e2-47ce-8e15-6dafdff3ea3b",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "block",
+                    "traces"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chain_id",
+                      "value": "ethereum"
+                    },
+                    {
+                      "key": "from_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "to_address",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "block_number",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "transaction_hash",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"error\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.transpose.io",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "6b629e53-e0c3-46d7-923b-775c1a0d1077",
+    "name": "Transpose Block API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.\n\n\nContact Support:\n Name: Transpose Support",
+      "type": "text/plain"
+    }
+  }
+}

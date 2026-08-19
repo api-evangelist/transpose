@@ -1,0 +1,331 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Transpose Block API NFT API API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "NFT API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get NFT Collections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/nft/collections",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter by collection contract address."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter collections by name (partial match)."
+              },
+              {
+                "name": "symbol",
+                "value": "",
+                "type": "query",
+                "description": "Filter collections by symbol."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "Return collections created after this date."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "Return collections created before this date."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Query NFT collections using flexible parameters to retrieve metadata and images. Filter by contract address, name, symbol, or creation date.\n"
+        },
+        {
+          "info": {
+            "name": "Get NFTs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/nft/nfts",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter NFTs by collection contract address."
+              },
+              {
+                "name": "token_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by specific token ID."
+              },
+              {
+                "name": "owner_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter NFTs by current owner address."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter NFTs by name."
+              },
+              {
+                "name": "minted_after",
+                "value": "",
+                "type": "query",
+                "description": "Return NFTs minted after this date."
+              },
+              {
+                "name": "minted_before",
+                "value": "",
+                "type": "query",
+                "description": "Return NFTs minted before this date."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Retrieve individual NFTs with rich metadata and media assets. Filter by contract, token ID, mint date, name, or owner.\n"
+        },
+        {
+          "info": {
+            "name": "Get NFT Transfers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/nft/transfers",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter transfers by NFT collection contract address."
+              },
+              {
+                "name": "token_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter transfers by token ID."
+              },
+              {
+                "name": "from_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter transfers by sender address."
+              },
+              {
+                "name": "to_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter transfers by recipient address."
+              },
+              {
+                "name": "transferred_after",
+                "value": "",
+                "type": "query",
+                "description": "The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.\n"
+              },
+              {
+                "name": "transferred_before",
+                "value": "",
+                "type": "query",
+                "description": "The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.\n"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Track all NFT movements including mints, transfers, and burns across ERC-721 and ERC-1155 standards within a specified date range.\n"
+        },
+        {
+          "info": {
+            "name": "Get NFT Sales",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/nft/sales",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter sales by NFT collection contract address."
+              },
+              {
+                "name": "token_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter sales by token ID."
+              },
+              {
+                "name": "account_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter sales by buyer or seller address."
+              },
+              {
+                "name": "transferred_after",
+                "value": "",
+                "type": "query",
+                "description": "The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.\n"
+              },
+              {
+                "name": "transferred_before",
+                "value": "",
+                "type": "query",
+                "description": "The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.\n"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Query NFT sales transactions across decentralized exchanges including OpenSea, LooksRare, Blur, and other NFT marketplaces.\n"
+        },
+        {
+          "info": {
+            "name": "Get NFT Owners",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.transpose.io/nft/owners",
+            "params": [
+              {
+                "name": "chain_id",
+                "value": "",
+                "type": "query",
+                "description": "A keyword (e.g., \"ethereum\") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.\n"
+              },
+              {
+                "name": "contract_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter owners by collection contract address."
+              },
+              {
+                "name": "token_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by specific token ID."
+              },
+              {
+                "name": "owner_address",
+                "value": "",
+                "type": "query",
+                "description": "Filter by specific owner address."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction for results."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return."
+              }
+            ]
+          },
+          "docs": "Access ownership information for collections and individual tokens, including historical NFT balances and ownership history.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
