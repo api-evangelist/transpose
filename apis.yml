@@ -1,5 +1,8 @@
 name: Transpose
-description: Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
+description: Historical blockchain data REST API providing access to transaction history, token transfers,
+  NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible
+  chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain
+  data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
 deliveryModel:
   model: saas
   open_source: false
@@ -29,25 +32,24 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/transpose.png
 url: https://raw.githubusercontent.com/api-evangelist/transpose/refs/heads/main/apis.yml
 created: '2026-06-14'
-modified: '2026-06-14'
+modified: '2026-09-16'
 specificationVersion: '0.23'
 tags:
-  - Blockchain
-  - NFT
-  - Cryptocurrency
-  - Web3
-  - Ethereum
-  - Token Transfers
-  - Smart Contracts
-  - Historical Data
-  - DeFi
-  - DEX
+- Blockchain
+- NFT
+- Cryptocurrency
+- Web3
+- Ethereum
+- Token Transfers
+- Smart Contracts
+- Historical Data
+- DeFi
+- DEX
 apis:
 - aid: transpose:transpose-block-api-api
-  name: Transpose Block API API
-  description: >-
-    Low-level blockchain primitives including accounts, blocks, transactions, logs, and traces across
-    EVM chains.
+  name: Transpose Block API
+  description: Low-level blockchain primitives including accounts, blocks, transactions, logs, and traces
+    across EVM chains.
   humanURL: https://docs.transpose.io/
   baseURL: https://api.transpose.io
   tags:
@@ -62,7 +64,7 @@ apis:
   - type: Documentation
     url: https://docs.transpose.io/verified-endpoints/token-prices-api/overview/
 - aid: transpose:transpose-ens-api-api
-  name: Transpose ENS API API
+  name: Transpose ENS API
   description: Ethereum Name Service records and transfer history.
   humanURL: https://docs.transpose.io/
   baseURL: https://api.transpose.io
@@ -78,7 +80,7 @@ apis:
   - type: Documentation
     url: https://docs.transpose.io/verified-endpoints/token-prices-api/overview/
 - aid: transpose:transpose-nft-api-api
-  name: Transpose NFT API API
+  name: Transpose NFT API
   description: NFT collections, ownership, sales, and transfers for ERC-721 and ERC-1155 tokens.
   humanURL: https://docs.transpose.io/
   baseURL: https://api.transpose.io
@@ -94,7 +96,7 @@ apis:
   - type: Documentation
     url: https://docs.transpose.io/verified-endpoints/token-prices-api/overview/
 - aid: transpose:transpose-sql-analytics-api-api
-  name: Transpose SQL Analytics API API
+  name: Transpose SQL Analytics API
   description: Custom SQL query interface against Transpose's entire indexed blockchain dataset.
   humanURL: https://docs.transpose.io/
   baseURL: https://api.transpose.io
@@ -110,7 +112,7 @@ apis:
   - type: Documentation
     url: https://docs.transpose.io/verified-endpoints/token-prices-api/overview/
 - aid: transpose:transpose-token-api-api
-  name: Transpose Token API API
+  name: Transpose Token API
   description: ERC-20, ERC-777, and native token balances, transfers, and DEX swaps.
   humanURL: https://docs.transpose.io/
   baseURL: https://api.transpose.io
@@ -126,7 +128,7 @@ apis:
   - type: Documentation
     url: https://docs.transpose.io/verified-endpoints/token-prices-api/overview/
 - aid: transpose:transpose-token-prices-api-api
-  name: Transpose Token Prices API API
+  name: Transpose Token Prices API
   description: Real-time and historical OHLC price data for any token including LP tokens.
   humanURL: https://docs.transpose.io/
   baseURL: https://api.transpose.io
@@ -142,33 +144,33 @@ apis:
   - type: Documentation
     url: https://docs.transpose.io/verified-endpoints/token-prices-api/overview/
 common:
-  - type: AgenticAccess
-    url: agentic-access/transpose-agentic-access.yml
-  - type: VulnerabilityDisclosure
-    url: security/transpose-vulnerability-disclosure.yml
-  - type: DomainSecurity
-    url: security/transpose-domain-security.yml
-  - type: Authentication
-    url: authentication/transpose-authentication.yml
-  - type: Portal
-    url: https://app.transpose.io
-  - type: Documentation
-    url: https://docs.transpose.io/
-  - type: GettingStarted
-    url: https://docs.transpose.io/quickstart/
-  - type: Pricing
-    url: https://www.transpose.io/pricing
-  - type: Blog
-    url: https://www.transpose.io/blogs
-  - type: Authentication
-    url: https://docs.transpose.io/quickstart/
-  - type: Plans
-    url: plans/plans.yml
-  - type: RateLimits
-    url: rate-limits/rate-limits.yml
-  - type: FinOps
-    url: finops/finops.yml
+- type: AgenticAccess
+  url: agentic-access/transpose-agentic-access.yml
+- type: VulnerabilityDisclosure
+  url: security/transpose-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/transpose-domain-security.yml
+- type: Authentication
+  url: authentication/transpose-authentication.yml
+- type: Portal
+  url: https://app.transpose.io
+- type: Documentation
+  url: https://docs.transpose.io/
+- type: GettingStarted
+  url: https://docs.transpose.io/quickstart/
+- type: Pricing
+  url: https://www.transpose.io/pricing
+- type: Blog
+  url: https://www.transpose.io/blogs
+- type: Authentication
+  url: https://docs.transpose.io/quickstart/
+- type: Plans
+  url: plans/plans.yml
+- type: RateLimits
+  url: rate-limits/rate-limits.yml
+- type: FinOps
+  url: finops/finops.yml
 maintainers:
-  - FN: API Evangelist
-    url: https://apievangelist.com
-    email: info@apievangelist.com
+- FN: API Evangelist
+  url: https://apievangelist.com
+  email: info@apievangelist.com
