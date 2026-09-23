@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Transpose Block API Token API API
-  description: 'Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
-
-    '
+  title: Transpose Token API
+  description: Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
   version: 1.0.0
   contact:
     name: Transpose Support
@@ -18,9 +16,7 @@ security:
 - ApiKeyAuth: []
 tags:
 - name: Token API
-  description: 'ERC-20, ERC-777, and native token balances, transfers, and DEX swaps.
-
-    '
+  description: ERC-20, ERC-777, and native token balances, transfers, and DEX swaps.
 paths:
   /token/tokens:
     get:
@@ -28,9 +24,7 @@ paths:
       - Token API
       summary: Get Tokens
       operationId: getTokens
-      description: 'Retrieve ERC-20 and ERC-777 token metadata. Filter by contract address, name, symbol, date created, or owner.
-
-        '
+      description: Retrieve ERC-20 and ERC-777 token metadata. Filter by contract address, name, symbol, date created, or owner.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: contract_address
@@ -102,9 +96,7 @@ paths:
       - Token API
       summary: Get Token Transfers
       operationId: getTokenTransfers
-      description: 'Query all token transfers including mints, sends, and burns across ERC-20 and ERC-777 tokens within a specified date range.
-
-        '
+      description: Query all token transfers including mints, sends, and burns across ERC-20 and ERC-777 tokens within a specified date range.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: contract_address
@@ -160,9 +152,7 @@ paths:
       - Token API
       summary: Get Token Swaps
       operationId: getTokenSwaps
-      description: 'Fetch swap activity across decentralized exchanges including Uniswap, SushiSwap, and others.
-
-        '
+      description: Fetch swap activity across decentralized exchanges including Uniswap, SushiSwap, and others.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: contract_address
@@ -218,9 +208,7 @@ paths:
       - Token API
       summary: Get Native Token Transfers
       operationId: getNativeTokenTransfers
-      description: 'Retrieve historical native token (ETH, MATIC, etc.) transfers and account balances across supported chains.
-
-        '
+      description: Retrieve historical native token (ETH, MATIC, etc.) transfers and account balances across supported chains.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: account_address
@@ -264,9 +252,7 @@ paths:
       - Token API
       summary: Get Token Owners
       operationId: getTokenOwners
-      description: 'Access token holders and their balances, sorted by amount. Supports historical ownership queries.
-
-        '
+      description: Access token holders and their balances, sorted by amount. Supports historical ownership queries.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: contract_address
@@ -317,64 +303,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
-  parameters:
-    TransferredAfter:
-      name: transferred_after
-      in: query
-      required: false
-      description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
-
-        '
-      schema:
-        type: string
-    ChainId:
-      name: chain_id
-      in: query
-      required: true
-      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
-
-        '
-      schema:
-        type: string
-        example: ethereum
-        enum:
-        - ethereum
-        - polygon
-        - optimism
-        - scroll
-        - arbitrum
-        - base
-        - avalanche
-    Order:
-      name: order
-      in: query
-      required: false
-      description: Sort direction for results.
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-    TransferredBefore:
-      name: transferred_before
-      in: query
-      required: false
-      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
-
-        '
-      schema:
-        type: string
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of results to return.
-      schema:
-        type: integer
-        default: 100
-        minimum: 1
-        maximum: 500
   schemas:
     TokenSwap:
       type: object
@@ -403,15 +331,24 @@ components:
           type: string
         quantity_out:
           type: string
-    ErrorResponse:
+    NativeTokenTransfer:
       type: object
+      description: Represents a native token (ETH, MATIC, etc.) transfer.
       properties:
-        status:
+        transaction_hash:
           type: string
-          example: error
-        message:
+        block_number:
+          type: integer
+        timestamp:
           type: string
-          description: Human-readable error description.
+          format: date-time
+        from_address:
+          type: string
+        to_address:
+          type: string
+        value:
+          type: string
+          description: Value transferred in wei.
     Token:
       type: object
       description: Represents an ERC-20 or ERC-777 fungible token.
@@ -431,24 +368,6 @@ components:
           format: date-time
         creator_address:
           type: string
-    NativeTokenTransfer:
-      type: object
-      description: Represents a native token (ETH, MATIC, etc.) transfer.
-      properties:
-        transaction_hash:
-          type: string
-        block_number:
-          type: integer
-        timestamp:
-          type: string
-          format: date-time
-        from_address:
-          type: string
-        to_address:
-          type: string
-        value:
-          type: string
-          description: Value transferred in wei.
     TokenTransfer:
       type: object
       description: Represents a token transfer event.
@@ -471,6 +390,73 @@ components:
         quantity:
           type: string
           description: Amount transferred (in token's smallest unit).
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
+  parameters:
+    TransferredAfter:
+      name: transferred_after
+      in: query
+      required: false
+      description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
+    ChainId:
+      name: chain_id
+      in: query
+      required: true
+      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
+
+        '
+      schema:
+        type: string
+        example: ethereum
+        enum:
+        - ethereum
+        - polygon
+        - optimism
+        - scroll
+        - arbitrum
+        - base
+        - avalanche
+    TransferredBefore:
+      name: transferred_before
+      in: query
+      required: false
+      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

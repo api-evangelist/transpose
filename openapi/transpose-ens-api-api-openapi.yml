@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Transpose Block API ENS API API
-  description: 'Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
-
-    '
+  title: Transpose ENS API
+  description: Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
   version: 1.0.0
   contact:
     name: Transpose Support
@@ -26,9 +24,7 @@ paths:
       - ENS API
       summary: Get ENS Records
       operationId: getEnsRecords
-      description: 'Retrieve any ENS record ever created. Filter by account, owner, ENS name, node, registration date, or expiration date.
-
-        '
+      description: Retrieve any ENS record ever created. Filter by account, owner, ENS name, node, registration date, or expiration date.
       parameters:
       - name: ens_name
         in: query
@@ -112,9 +108,7 @@ paths:
       - ENS API
       summary: Get ENS Transfers
       operationId: getEnsTransfers
-      description: 'Retrieve all historical and live ENS name transfers and registrations. Filter by ENS name or token ID.
-
-        '
+      description: Retrieve all historical and live ENS name transfers and registrations. Filter by ENS name or token ID.
       parameters:
       - name: ens_name
         in: query
@@ -168,6 +162,25 @@ components:
         '
       schema:
         type: string
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
+    TransferredBefore:
+      name: transferred_before
+      in: query
+      required: false
+      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
     Order:
       name: order
       in: query
@@ -179,25 +192,6 @@ components:
         - asc
         - desc
         default: desc
-    TransferredBefore:
-      name: transferred_before
-      in: query
-      required: false
-      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
-
-        '
-      schema:
-        type: string
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of results to return.
-      schema:
-        type: integer
-        default: 100
-        minimum: 1
-        maximum: 500
   schemas:
     EnsTransfer:
       type: object

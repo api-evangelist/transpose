@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Transpose Block API NFT API API
-  description: 'Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
-
-    '
+  title: Transpose NFT API
+  description: Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
   version: 1.0.0
   contact:
     name: Transpose Support
@@ -18,9 +16,7 @@ security:
 - ApiKeyAuth: []
 tags:
 - name: NFT API
-  description: 'NFT collections, ownership, sales, and transfers for ERC-721 and ERC-1155 tokens.
-
-    '
+  description: NFT collections, ownership, sales, and transfers for ERC-721 and ERC-1155 tokens.
 paths:
   /nft/collections:
     get:
@@ -28,9 +24,7 @@ paths:
       - NFT API
       summary: Get NFT Collections
       operationId: getNftCollections
-      description: 'Query NFT collections using flexible parameters to retrieve metadata and images. Filter by contract address, name, symbol, or creation date.
-
-        '
+      description: Query NFT collections using flexible parameters to retrieve metadata and images. Filter by contract address, name, symbol, or creation date.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: contract_address
@@ -96,9 +90,7 @@ paths:
       - NFT API
       summary: Get NFTs
       operationId: getNfts
-      description: 'Retrieve individual NFTs with rich metadata and media assets. Filter by contract, token ID, mint date, name, or owner.
-
-        '
+      description: Retrieve individual NFTs with rich metadata and media assets. Filter by contract, token ID, mint date, name, or owner.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: contract_address
@@ -170,9 +162,7 @@ paths:
       - NFT API
       summary: Get NFT Transfers
       operationId: getNftTransfers
-      description: 'Track all NFT movements including mints, transfers, and burns across ERC-721 and ERC-1155 standards within a specified date range.
-
-        '
+      description: Track all NFT movements including mints, transfers, and burns across ERC-721 and ERC-1155 standards within a specified date range.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: contract_address
@@ -234,9 +224,7 @@ paths:
       - NFT API
       summary: Get NFT Sales
       operationId: getNftSales
-      description: 'Query NFT sales transactions across decentralized exchanges including OpenSea, LooksRare, Blur, and other NFT marketplaces.
-
-        '
+      description: Query NFT sales transactions across decentralized exchanges including OpenSea, LooksRare, Blur, and other NFT marketplaces.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: contract_address
@@ -292,9 +280,7 @@ paths:
       - NFT API
       summary: Get NFT Owners
       operationId: getNftOwners
-      description: 'Access ownership information for collections and individual tokens, including historical NFT balances and ownership history.
-
-        '
+      description: Access ownership information for collections and individual tokens, including historical NFT balances and ownership history.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: contract_address
@@ -363,6 +349,16 @@ components:
         '
       schema:
         type: string
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
     ChainId:
       name: chain_id
       in: query
@@ -381,6 +377,15 @@ components:
         - arbitrum
         - base
         - avalanche
+    TransferredBefore:
+      name: transferred_before
+      in: query
+      required: false
+      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
     Order:
       name: order
       in: query
@@ -392,25 +397,6 @@ components:
         - asc
         - desc
         default: desc
-    TransferredBefore:
-      name: transferred_before
-      in: query
-      required: false
-      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
-
-        '
-      schema:
-        type: string
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of results to return.
-      schema:
-        type: integer
-        default: 100
-        minimum: 1
-        maximum: 500
   schemas:
     Nft:
       type: object
@@ -457,37 +443,6 @@ components:
           enum:
           - erc721
           - erc1155
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: error
-        message:
-          type: string
-          description: Human-readable error description.
-    NftCollection:
-      type: object
-      description: Represents an NFT collection.
-      properties:
-        contract_address:
-          type: string
-        name:
-          type: string
-        symbol:
-          type: string
-        token_standard:
-          type: string
-          enum:
-          - erc721
-          - erc1155
-        created_timestamp:
-          type: string
-          format: date-time
-        creator_address:
-          type: string
-        total_supply:
-          type: integer
     NftSale:
       type: object
       description: Represents an NFT sale transaction.
@@ -514,6 +469,37 @@ components:
           description: Sale price in ETH.
         exchange_name:
           type: string
+    NftCollection:
+      type: object
+      description: Represents an NFT collection.
+      properties:
+        contract_address:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+        token_standard:
+          type: string
+          enum:
+          - erc721
+          - erc1155
+        created_timestamp:
+          type: string
+          format: date-time
+        creator_address:
+          type: string
+        total_supply:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Transpose Block API SQL Analytics API API
-  description: 'Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
-
-    '
+  title: Transpose SQL Analytics API
+  description: Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
   version: 1.0.0
   contact:
     name: Transpose Support
@@ -18,9 +16,7 @@ security:
 - ApiKeyAuth: []
 tags:
 - name: SQL Analytics API
-  description: 'Custom SQL query interface against Transpose''s entire indexed blockchain dataset.
-
-    '
+  description: Custom SQL query interface against Transpose's entire indexed blockchain dataset.
 paths:
   /sql:
     post:
@@ -28,9 +24,7 @@ paths:
       - SQL Analytics API
       summary: Execute SQL Query
       operationId: executeSqlQuery
-      description: 'Execute a custom SQL query against Transpose''s entire indexed blockchain dataset. Tables are namespaced by chain (e.g., ethereum.nft_sales, polygon.tokens). Supports pagination, parameterized queries, and cross-chain multichain queries. Credits consumed are returned in the X-Credits-Charged response header.
-
-        '
+      description: Execute a custom SQL query against Transpose's entire indexed blockchain dataset. Tables are namespaced by chain (e.g., ethereum.nft_sales, polygon.tokens). Supports pagination, parameterized queries, and cross-chain multichain queries. Credits consumed are returned in the X-Credits-Charged response header.
       requestBody:
         required: true
         content:
@@ -82,6 +76,23 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    SqlQueryResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Query status.
+        results:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+          description: Array of result rows as key-value objects.
+        columns:
+          type: array
+          items:
+            type: string
+          description: Column names of the result set.
     ErrorResponse:
       type: object
       properties:
@@ -102,23 +113,6 @@ components:
 
             '
           example: SELECT * FROM ethereum.nft_sales ORDER BY timestamp DESC LIMIT 10;
-    SqlQueryResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          description: Query status.
-        results:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-          description: Array of result rows as key-value objects.
-        columns:
-          type: array
-          items:
-            type: string
-          description: Column names of the result set.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

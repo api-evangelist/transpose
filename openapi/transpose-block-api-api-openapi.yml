@@ -1,9 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Transpose Block API API
-  description: 'Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
-
-    '
+  title: Transpose Block API
+  description: Historical blockchain data REST API providing access to transaction history, token transfers, NFT metadata, smart contract events, DEX swaps, and price data across Ethereum and other EVM-compatible chains. Offers five enterprise-grade REST APIs plus a SQL Analytics API for querying indexed blockchain data across Ethereum, Polygon, Optimism, Base, Arbitrum, Avalanche, BSC, Bitcoin, and Tron.
   version: 1.0.0
   contact:
     name: Transpose Support
@@ -18,9 +16,7 @@ security:
 - ApiKeyAuth: []
 tags:
 - name: Block API
-  description: 'Low-level blockchain primitives including accounts, blocks, transactions, logs, and traces across EVM chains.
-
-    '
+  description: Low-level blockchain primitives including accounts, blocks, transactions, logs, and traces across EVM chains.
 paths:
   /block/accounts:
     get:
@@ -28,9 +24,7 @@ paths:
       - Block API
       summary: Get Accounts
       operationId: getAccounts
-      description: 'Retrieve externally-owned accounts and smart contracts with metadata. Filter by address, creator, or date created.
-
-        '
+      description: Retrieve externally-owned accounts and smart contracts with metadata. Filter by address, creator, or date created.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: address
@@ -97,9 +91,7 @@ paths:
       - Block API
       summary: Get Blocks
       operationId: getBlocks
-      description: 'Retrieve historical blocks with fee calculations. Filter by date or block number range.
-
-        '
+      description: Retrieve historical blocks with fee calculations. Filter by date or block number range.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: block_number_above
@@ -159,9 +151,7 @@ paths:
       - Block API
       summary: Get Transactions
       operationId: getTransactions
-      description: 'Query all transactions with flexible filtering by account, block, contract, date, or transaction hash.
-
-        '
+      description: Query all transactions with flexible filtering by account, block, contract, date, or transaction hash.
       parameters:
       - $ref: '#/components/parameters/ChainId'
       - name: from_address
@@ -342,41 +332,47 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
+    ChainId:
+      name: chain_id
+      in: query
+      required: true
+      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
+
+        '
+      schema:
+        type: string
+        example: ethereum
+        enum:
+        - ethereum
+        - polygon
+        - optimism
+        - scroll
+        - arbitrum
+        - base
+        - avalanche
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
   schemas:
-    Log:
-      type: object
-      description: Represents a smart contract event log.
-      properties:
-        transaction_hash:
-          type: string
-          description: Transaction hash containing this log.
-        log_index:
-          type: integer
-          description: Index of the log within the transaction.
-        block_number:
-          type: integer
-          description: Block number containing this log.
-        timestamp:
-          type: string
-          format: date-time
-        contract_address:
-          type: string
-          description: Address of the contract that emitted this log.
-        topic_0:
-          type: string
-          description: Event signature hash.
-        data:
-          type: string
-          description: Non-indexed log data.
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: error
-        message:
-          type: string
-          description: Human-readable error description.
     Transaction:
       type: object
       description: Represents a blockchain transaction.
@@ -412,6 +408,89 @@ components:
         method_id:
           type: string
           description: First 4 bytes of call data identifying the contract method.
+    Log:
+      type: object
+      description: Represents a smart contract event log.
+      properties:
+        transaction_hash:
+          type: string
+          description: Transaction hash containing this log.
+        log_index:
+          type: integer
+          description: Index of the log within the transaction.
+        block_number:
+          type: integer
+          description: Block number containing this log.
+        timestamp:
+          type: string
+          format: date-time
+        contract_address:
+          type: string
+          description: Address of the contract that emitted this log.
+        topic_0:
+          type: string
+          description: Event signature hash.
+        data:
+          type: string
+          description: Non-indexed log data.
+    Account:
+      type: object
+      description: Represents an externally-owned account or smart contract.
+      properties:
+        address:
+          type: string
+          description: The account's blockchain address.
+        account_type:
+          type: string
+          description: Whether the account is an EOA or smart contract.
+          enum:
+          - externally_owned_account
+          - contract
+        created_timestamp:
+          type: string
+          format: date-time
+          description: When the account was first seen on-chain.
+        creator_address:
+          type: string
+          description: The address that created this contract (if applicable).
+        created_block_number:
+          type: integer
+          description: Block number when the account was created.
+    Block:
+      type: object
+      description: Represents a blockchain block.
+      properties:
+        block_number:
+          type: integer
+          description: The block number.
+        block_hash:
+          type: string
+          description: The block hash.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the block was mined.
+        miner:
+          type: string
+          description: Address of the block miner.
+        transaction_count:
+          type: integer
+          description: Number of transactions in the block.
+        gas_used:
+          type: integer
+          description: Total gas used by all transactions.
+        base_fee_per_gas:
+          type: string
+          description: Base fee per gas in wei (EIP-1559 blocks).
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
     Trace:
       type: object
       description: Represents an internal transaction trace.
@@ -440,95 +519,6 @@ components:
           - delegatecall
           - create
           - selfdestruct
-    Block:
-      type: object
-      description: Represents a blockchain block.
-      properties:
-        block_number:
-          type: integer
-          description: The block number.
-        block_hash:
-          type: string
-          description: The block hash.
-        timestamp:
-          type: string
-          format: date-time
-          description: When the block was mined.
-        miner:
-          type: string
-          description: Address of the block miner.
-        transaction_count:
-          type: integer
-          description: Number of transactions in the block.
-        gas_used:
-          type: integer
-          description: Total gas used by all transactions.
-        base_fee_per_gas:
-          type: string
-          description: Base fee per gas in wei (EIP-1559 blocks).
-    Account:
-      type: object
-      description: Represents an externally-owned account or smart contract.
-      properties:
-        address:
-          type: string
-          description: The account's blockchain address.
-        account_type:
-          type: string
-          description: Whether the account is an EOA or smart contract.
-          enum:
-          - externally_owned_account
-          - contract
-        created_timestamp:
-          type: string
-          format: date-time
-          description: When the account was first seen on-chain.
-        creator_address:
-          type: string
-          description: The address that created this contract (if applicable).
-        created_block_number:
-          type: integer
-          description: Block number when the account was created.
-  parameters:
-    ChainId:
-      name: chain_id
-      in: query
-      required: true
-      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
-
-        '
-      schema:
-        type: string
-        example: ethereum
-        enum:
-        - ethereum
-        - polygon
-        - optimism
-        - scroll
-        - arbitrum
-        - base
-        - avalanche
-    Order:
-      name: order
-      in: query
-      required: false
-      description: Sort direction for results.
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of results to return.
-      schema:
-        type: integer
-        default: 100
-        minimum: 1
-        maximum: 500
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
