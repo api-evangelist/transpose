@@ -181,69 +181,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
-  parameters:
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of results to return.
-      schema:
-        type: integer
-        default: 100
-        minimum: 1
-        maximum: 500
-    ChainId:
-      name: chain_id
-      in: query
-      required: true
-      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
-
-        '
-      schema:
-        type: string
-        example: ethereum
-        enum:
-        - ethereum
-        - polygon
-        - optimism
-        - scroll
-        - arbitrum
-        - base
-        - avalanche
-    Order:
-      name: order
-      in: query
-      required: false
-      description: Sort direction for results.
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
   schemas:
-    OhlcPrice:
-      type: object
-      description: Represents OHLC candlestick price data for a token.
-      properties:
-        contract_address:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        interval:
-          type: string
-          description: Candlestick interval (e.g., minute, hour, day).
-        open_usd:
-          type: number
-        high_usd:
-          type: number
-        low_usd:
-          type: number
-        close_usd:
-          type: number
-        volume_usd:
-          type: number
     TokenPrice:
       type: object
       description: Represents a point-in-time token price.
@@ -268,6 +206,68 @@ components:
         message:
           type: string
           description: Human-readable error description.
+    OhlcPrice:
+      type: object
+      description: Represents OHLC candlestick price data for a token.
+      properties:
+        contract_address:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        interval:
+          type: string
+          description: Candlestick interval (e.g., minute, hour, day).
+        open_usd:
+          type: number
+        high_usd:
+          type: number
+        low_usd:
+          type: number
+        close_usd:
+          type: number
+        volume_usd:
+          type: number
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    ChainId:
+      name: chain_id
+      in: query
+      required: true
+      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
+
+        '
+      schema:
+        type: string
+        example: ethereum
+        enum:
+        - ethereum
+        - polygon
+        - optimism
+        - scroll
+        - arbitrum
+        - base
+        - avalanche
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

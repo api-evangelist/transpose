@@ -400,15 +400,6 @@ components:
           type: string
           description: Human-readable error description.
   parameters:
-    TransferredAfter:
-      name: transferred_after
-      in: query
-      required: false
-      description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
-
-        '
-      schema:
-        type: string
     Limit:
       name: limit
       in: query
@@ -419,6 +410,26 @@ components:
         default: 100
         minimum: 1
         maximum: 500
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    TransferredAfter:
+      name: transferred_after
+      in: query
+      required: false
+      description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
     ChainId:
       name: chain_id
       in: query
@@ -446,17 +457,6 @@ components:
         '
       schema:
         type: string
-    Order:
-      name: order
-      in: query
-      required: false
-      description: Sort direction for results.
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

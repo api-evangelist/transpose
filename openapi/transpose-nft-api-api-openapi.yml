@@ -340,15 +340,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   parameters:
-    TransferredAfter:
-      name: transferred_after
-      in: query
-      required: false
-      description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
-
-        '
-      schema:
-        type: string
     Limit:
       name: limit
       in: query
@@ -359,6 +350,15 @@ components:
         default: 100
         minimum: 1
         maximum: 500
+    TransferredAfter:
+      name: transferred_after
+      in: query
+      required: false
+      description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
     ChainId:
       name: chain_id
       in: query
@@ -377,15 +377,6 @@ components:
         - arbitrum
         - base
         - avalanche
-    TransferredBefore:
-      name: transferred_before
-      in: query
-      required: false
-      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
-
-        '
-      schema:
-        type: string
     Order:
       name: order
       in: query
@@ -397,52 +388,16 @@ components:
         - asc
         - desc
         default: desc
+    TransferredBefore:
+      name: transferred_before
+      in: query
+      required: false
+      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
   schemas:
-    Nft:
-      type: object
-      description: Represents an individual NFT.
-      properties:
-        contract_address:
-          type: string
-        token_id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        image_url:
-          type: string
-        minted_timestamp:
-          type: string
-          format: date-time
-        owner_address:
-          type: string
-    NftTransfer:
-      type: object
-      description: Represents an NFT transfer event.
-      properties:
-        transaction_hash:
-          type: string
-        log_index:
-          type: integer
-        block_number:
-          type: integer
-        timestamp:
-          type: string
-          format: date-time
-        contract_address:
-          type: string
-        token_id:
-          type: string
-        from_address:
-          type: string
-        to_address:
-          type: string
-        token_standard:
-          type: string
-          enum:
-          - erc721
-          - erc1155
     NftSale:
       type: object
       description: Represents an NFT sale transaction.
@@ -469,6 +424,25 @@ components:
           description: Sale price in ETH.
         exchange_name:
           type: string
+    Nft:
+      type: object
+      description: Represents an individual NFT.
+      properties:
+        contract_address:
+          type: string
+        token_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        image_url:
+          type: string
+        minted_timestamp:
+          type: string
+          format: date-time
+        owner_address:
+          type: string
     NftCollection:
       type: object
       description: Represents an NFT collection.
@@ -491,6 +465,32 @@ components:
           type: string
         total_supply:
           type: integer
+    NftTransfer:
+      type: object
+      description: Represents an NFT transfer event.
+      properties:
+        transaction_hash:
+          type: string
+        log_index:
+          type: integer
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        contract_address:
+          type: string
+        token_id:
+          type: string
+        from_address:
+          type: string
+        to_address:
+          type: string
+        token_standard:
+          type: string
+          enum:
+          - erc721
+          - erc1155
     ErrorResponse:
       type: object
       properties:
