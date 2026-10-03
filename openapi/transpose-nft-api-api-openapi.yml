@@ -339,65 +339,38 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
-  parameters:
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of results to return.
-      schema:
-        type: integer
-        default: 100
-        minimum: 1
-        maximum: 500
-    TransferredAfter:
-      name: transferred_after
-      in: query
-      required: false
-      description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
-
-        '
-      schema:
-        type: string
-    ChainId:
-      name: chain_id
-      in: query
-      required: true
-      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
-
-        '
-      schema:
-        type: string
-        example: ethereum
-        enum:
-        - ethereum
-        - polygon
-        - optimism
-        - scroll
-        - arbitrum
-        - base
-        - avalanche
-    Order:
-      name: order
-      in: query
-      required: false
-      description: Sort direction for results.
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-    TransferredBefore:
-      name: transferred_before
-      in: query
-      required: false
-      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
-
-        '
-      schema:
-        type: string
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
+    NftCollection:
+      type: object
+      description: Represents an NFT collection.
+      properties:
+        contract_address:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+        token_standard:
+          type: string
+          enum:
+          - erc721
+          - erc1155
+        created_timestamp:
+          type: string
+          format: date-time
+        creator_address:
+          type: string
+        total_supply:
+          type: integer
     NftSale:
       type: object
       description: Represents an NFT sale transaction.
@@ -443,28 +416,6 @@ components:
           format: date-time
         owner_address:
           type: string
-    NftCollection:
-      type: object
-      description: Represents an NFT collection.
-      properties:
-        contract_address:
-          type: string
-        name:
-          type: string
-        symbol:
-          type: string
-        token_standard:
-          type: string
-          enum:
-          - erc721
-          - erc1155
-        created_timestamp:
-          type: string
-          format: date-time
-        creator_address:
-          type: string
-        total_supply:
-          type: integer
     NftTransfer:
       type: object
       description: Represents an NFT transfer event.
@@ -491,15 +442,64 @@ components:
           enum:
           - erc721
           - erc1155
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: error
-        message:
-          type: string
-          description: Human-readable error description.
+  parameters:
+    ChainId:
+      name: chain_id
+      in: query
+      required: true
+      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
+
+        '
+      schema:
+        type: string
+        example: ethereum
+        enum:
+        - ethereum
+        - polygon
+        - optimism
+        - scroll
+        - arbitrum
+        - base
+        - avalanche
+    TransferredBefore:
+      name: transferred_before
+      in: query
+      required: false
+      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
+    TransferredAfter:
+      name: transferred_after
+      in: query
+      required: false
+      description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

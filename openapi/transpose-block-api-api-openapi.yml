@@ -332,47 +332,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
-  parameters:
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of results to return.
-      schema:
-        type: integer
-        default: 100
-        minimum: 1
-        maximum: 500
-    Order:
-      name: order
-      in: query
-      required: false
-      description: Sort direction for results.
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-    ChainId:
-      name: chain_id
-      in: query
-      required: true
-      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
-
-        '
-      schema:
-        type: string
-        example: ethereum
-        enum:
-        - ethereum
-        - polygon
-        - optimism
-        - scroll
-        - arbitrum
-        - base
-        - avalanche
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
     Block:
       type: object
       description: Represents a blockchain block.
@@ -399,6 +368,41 @@ components:
         base_fee_per_gas:
           type: string
           description: Base fee per gas in wei (EIP-1559 blocks).
+    Transaction:
+      type: object
+      description: Represents a blockchain transaction.
+      properties:
+        transaction_hash:
+          type: string
+          description: The transaction hash.
+        block_number:
+          type: integer
+          description: Block number containing this transaction.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the transaction was included in a block.
+        from_address:
+          type: string
+          description: The sender's address.
+        to_address:
+          type: string
+          description: The recipient's address.
+        value:
+          type: string
+          description: Value transferred in wei.
+        gas_price:
+          type: string
+          description: Gas price in wei.
+        gas_used:
+          type: integer
+          description: Actual gas consumed.
+        status:
+          type: integer
+          description: Transaction status (1 = success, 0 = failure).
+        method_id:
+          type: string
+          description: First 4 bytes of call data identifying the contract method.
     Trace:
       type: object
       description: Represents an internal transaction trace.
@@ -450,41 +454,6 @@ components:
         created_block_number:
           type: integer
           description: Block number when the account was created.
-    Transaction:
-      type: object
-      description: Represents a blockchain transaction.
-      properties:
-        transaction_hash:
-          type: string
-          description: The transaction hash.
-        block_number:
-          type: integer
-          description: Block number containing this transaction.
-        timestamp:
-          type: string
-          format: date-time
-          description: When the transaction was included in a block.
-        from_address:
-          type: string
-          description: The sender's address.
-        to_address:
-          type: string
-          description: The recipient's address.
-        value:
-          type: string
-          description: Value transferred in wei.
-        gas_price:
-          type: string
-          description: Gas price in wei.
-        gas_used:
-          type: integer
-          description: Actual gas consumed.
-        status:
-          type: integer
-          description: Transaction status (1 = success, 0 = failure).
-        method_id:
-          type: string
-          description: First 4 bytes of call data identifying the contract method.
     Log:
       type: object
       description: Represents a smart contract event log.
@@ -510,15 +479,46 @@ components:
         data:
           type: string
           description: Non-indexed log data.
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: error
-        message:
-          type: string
-          description: Human-readable error description.
+  parameters:
+    ChainId:
+      name: chain_id
+      in: query
+      required: true
+      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
+
+        '
+      schema:
+        type: string
+        example: ethereum
+        enum:
+        - ethereum
+        - polygon
+        - optimism
+        - scroll
+        - arbitrum
+        - base
+        - avalanche
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

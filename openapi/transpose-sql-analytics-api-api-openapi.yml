@@ -76,23 +76,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    SqlQueryResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          description: Query status.
-        results:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-          description: Array of result rows as key-value objects.
-        columns:
-          type: array
-          items:
-            type: string
-          description: Column names of the result set.
     ErrorResponse:
       type: object
       properties:
@@ -113,6 +96,23 @@ components:
 
             '
           example: SELECT * FROM ethereum.nft_sales ORDER BY timestamp DESC LIMIT 10;
+    SqlQueryResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Query status.
+        results:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+          description: Array of result rows as key-value objects.
+        columns:
+          type: array
+          items:
+            type: string
+          description: Column names of the result set.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

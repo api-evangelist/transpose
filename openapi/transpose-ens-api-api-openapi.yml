@@ -153,6 +153,15 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
     EnsRecord:
       type: object
       description: Represents an ENS domain record.
@@ -175,15 +184,6 @@ components:
         expiration_timestamp:
           type: string
           format: date-time
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: error
-        message:
-          type: string
-          description: Human-readable error description.
     EnsTransfer:
       type: object
       description: Represents an ENS name transfer or registration event.
@@ -202,6 +202,24 @@ components:
         to_address:
           type: string
   parameters:
+    TransferredBefore:
+      name: transferred_before
+      in: query
+      required: false
+      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
+    TransferredAfter:
+      name: transferred_after
+      in: query
+      required: false
+      description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
     Limit:
       name: limit
       in: query
@@ -223,24 +241,6 @@ components:
         - asc
         - desc
         default: desc
-    TransferredAfter:
-      name: transferred_after
-      in: query
-      required: false
-      description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
-
-        '
-      schema:
-        type: string
-    TransferredBefore:
-      name: transferred_before
-      in: query
-      required: false
-      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
-
-        '
-      schema:
-        type: string
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
