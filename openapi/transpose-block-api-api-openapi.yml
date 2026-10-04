@@ -342,32 +342,6 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    Block:
-      type: object
-      description: Represents a blockchain block.
-      properties:
-        block_number:
-          type: integer
-          description: The block number.
-        block_hash:
-          type: string
-          description: The block hash.
-        timestamp:
-          type: string
-          format: date-time
-          description: When the block was mined.
-        miner:
-          type: string
-          description: Address of the block miner.
-        transaction_count:
-          type: integer
-          description: Number of transactions in the block.
-        gas_used:
-          type: integer
-          description: Total gas used by all transactions.
-        base_fee_per_gas:
-          type: string
-          description: Base fee per gas in wei (EIP-1559 blocks).
     Transaction:
       type: object
       description: Represents a blockchain transaction.
@@ -403,6 +377,80 @@ components:
         method_id:
           type: string
           description: First 4 bytes of call data identifying the contract method.
+    Log:
+      type: object
+      description: Represents a smart contract event log.
+      properties:
+        transaction_hash:
+          type: string
+          description: Transaction hash containing this log.
+        log_index:
+          type: integer
+          description: Index of the log within the transaction.
+        block_number:
+          type: integer
+          description: Block number containing this log.
+        timestamp:
+          type: string
+          format: date-time
+        contract_address:
+          type: string
+          description: Address of the contract that emitted this log.
+        topic_0:
+          type: string
+          description: Event signature hash.
+        data:
+          type: string
+          description: Non-indexed log data.
+    Block:
+      type: object
+      description: Represents a blockchain block.
+      properties:
+        block_number:
+          type: integer
+          description: The block number.
+        block_hash:
+          type: string
+          description: The block hash.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the block was mined.
+        miner:
+          type: string
+          description: Address of the block miner.
+        transaction_count:
+          type: integer
+          description: Number of transactions in the block.
+        gas_used:
+          type: integer
+          description: Total gas used by all transactions.
+        base_fee_per_gas:
+          type: string
+          description: Base fee per gas in wei (EIP-1559 blocks).
+    Account:
+      type: object
+      description: Represents an externally-owned account or smart contract.
+      properties:
+        address:
+          type: string
+          description: The account's blockchain address.
+        account_type:
+          type: string
+          description: Whether the account is an EOA or smart contract.
+          enum:
+          - externally_owned_account
+          - contract
+        created_timestamp:
+          type: string
+          format: date-time
+          description: When the account was first seen on-chain.
+        creator_address:
+          type: string
+          description: The address that created this contract (if applicable).
+        created_block_number:
+          type: integer
+          description: Block number when the account was created.
     Trace:
       type: object
       description: Represents an internal transaction trace.
@@ -431,73 +479,7 @@ components:
           - delegatecall
           - create
           - selfdestruct
-    Account:
-      type: object
-      description: Represents an externally-owned account or smart contract.
-      properties:
-        address:
-          type: string
-          description: The account's blockchain address.
-        account_type:
-          type: string
-          description: Whether the account is an EOA or smart contract.
-          enum:
-          - externally_owned_account
-          - contract
-        created_timestamp:
-          type: string
-          format: date-time
-          description: When the account was first seen on-chain.
-        creator_address:
-          type: string
-          description: The address that created this contract (if applicable).
-        created_block_number:
-          type: integer
-          description: Block number when the account was created.
-    Log:
-      type: object
-      description: Represents a smart contract event log.
-      properties:
-        transaction_hash:
-          type: string
-          description: Transaction hash containing this log.
-        log_index:
-          type: integer
-          description: Index of the log within the transaction.
-        block_number:
-          type: integer
-          description: Block number containing this log.
-        timestamp:
-          type: string
-          format: date-time
-        contract_address:
-          type: string
-          description: Address of the contract that emitted this log.
-        topic_0:
-          type: string
-          description: Event signature hash.
-        data:
-          type: string
-          description: Non-indexed log data.
   parameters:
-    ChainId:
-      name: chain_id
-      in: query
-      required: true
-      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
-
-        '
-      schema:
-        type: string
-        example: ethereum
-        enum:
-        - ethereum
-        - polygon
-        - optimism
-        - scroll
-        - arbitrum
-        - base
-        - avalanche
     Limit:
       name: limit
       in: query
@@ -519,6 +501,24 @@ components:
         - asc
         - desc
         default: desc
+    ChainId:
+      name: chain_id
+      in: query
+      required: true
+      description: 'A keyword (e.g., "ethereum") or CAIP-2 identifier specifying the blockchain to query. Supported values: ethereum, polygon, optimism, scroll, arbitrum, base, avalanche.
+
+        '
+      schema:
+        type: string
+        example: ethereum
+        enum:
+        - ethereum
+        - polygon
+        - optimism
+        - scroll
+        - arbitrum
+        - base
+        - avalanche
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -76,15 +76,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: error
-        message:
-          type: string
-          description: Human-readable error description.
     SqlQueryRequest:
       type: object
       required:
@@ -96,6 +87,15 @@ components:
 
             '
           example: SELECT * FROM ethereum.nft_sales ORDER BY timestamp DESC LIMIT 10;
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
     SqlQueryResponse:
       type: object
       properties:
