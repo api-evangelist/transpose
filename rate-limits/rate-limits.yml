@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 name: Transpose Rate Limits
 description: Transpose enforces rate limits at the tier level rather than publishing fixed requests-per-second figures publicly. Usage is metered via a credit system where each API request consumes credits based on the volume of data returned and database compute time used. Data retrieval costs approximately 5000 credits per GB and compute costs approximately 60 credits per second of query execution. Every response includes an X-Credits-Charged header indicating the exact credit cost of that request. Monthly credit allowances vary by plan tier, with optional overage billing available once the monthly budget is exhausted.
 limits:

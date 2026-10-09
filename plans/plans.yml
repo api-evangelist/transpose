@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 name: Transpose Plans
 description: Transpose uses a credit-based billing system where each team is assigned a tier with a monthly credit allowance. Credits track both REST API and SQL Analytics API usage. Each request returns an X-Credits-Charged response header indicating consumption. Data retrieval costs approximately 5000 credits per GB and compute costs approximately 60 credits per second. Overages are available at a fixed price per credit but are disabled by default to prevent unexpected charges.
 plans:
@@ -45,3 +49,25 @@ plans:
         description: API key management and usage tracking in app.transpose.io
       - name: Credit Tracking
         description: Real-time credit consumption via X-Credits-Charged response headers
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - negotiated
+  units: []
+  plans:
+  - name: Free
+    access: other
+    model: free
+    model_how: derived
+    units:
+    - other
+    periods: []
+  - name: Paid Tiers
+    access: other
+    model: negotiated
+    model_how: derived
+    units:
+    - other
+    periods: []

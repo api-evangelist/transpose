@@ -1,3 +1,11 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+# Coverage demoted 2026-10-07 (roadmap#942, PLAN.md Stage A): this file was written by an API Evangelist
+# sweep and names no billing unit, meters or pricing category read from the provider — it restates the
+# FinOps framework. It is `x-coverage: unmeasured`, and the FOCUS alignment it claimed has been removed.
+x-coverage: unmeasured
+method: generated
 name: Transpose FinOps
 description: Transpose uses a credit-based consumption model for financial operations. Credits serve as the single unit of account for both REST API and SQL Analytics API usage, enabling unified cost tracking across all API families. Each team is assigned a monthly credit budget based on their tier. Costs scale with data volume (credits per GB returned) and compute time (credits per second of query execution), making query optimization a primary lever for cost management. The X-Credits-Charged response header on every request enables granular per-call cost attribution.
 model: credits
