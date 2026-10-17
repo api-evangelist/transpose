@@ -333,15 +333,34 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
+    Trace:
       type: object
+      description: Represents an internal transaction trace.
       properties:
-        status:
+        transaction_hash:
           type: string
-          example: error
-        message:
+        trace_index:
+          type: integer
+        block_number:
+          type: integer
+        timestamp:
           type: string
-          description: Human-readable error description.
+          format: date-time
+        from_address:
+          type: string
+        to_address:
+          type: string
+        value:
+          type: string
+          description: Value transferred in wei.
+        call_type:
+          type: string
+          enum:
+          - call
+          - staticcall
+          - delegatecall
+          - create
+          - selfdestruct
     Transaction:
       type: object
       description: Represents a blockchain transaction.
@@ -377,31 +396,6 @@ components:
         method_id:
           type: string
           description: First 4 bytes of call data identifying the contract method.
-    Log:
-      type: object
-      description: Represents a smart contract event log.
-      properties:
-        transaction_hash:
-          type: string
-          description: Transaction hash containing this log.
-        log_index:
-          type: integer
-          description: Index of the log within the transaction.
-        block_number:
-          type: integer
-          description: Block number containing this log.
-        timestamp:
-          type: string
-          format: date-time
-        contract_address:
-          type: string
-          description: Address of the contract that emitted this log.
-        topic_0:
-          type: string
-          description: Event signature hash.
-        data:
-          type: string
-          description: Non-indexed log data.
     Block:
       type: object
       description: Represents a blockchain block.
@@ -428,6 +422,40 @@ components:
         base_fee_per_gas:
           type: string
           description: Base fee per gas in wei (EIP-1559 blocks).
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
+    Log:
+      type: object
+      description: Represents a smart contract event log.
+      properties:
+        transaction_hash:
+          type: string
+          description: Transaction hash containing this log.
+        log_index:
+          type: integer
+          description: Index of the log within the transaction.
+        block_number:
+          type: integer
+          description: Block number containing this log.
+        timestamp:
+          type: string
+          format: date-time
+        contract_address:
+          type: string
+          description: Address of the contract that emitted this log.
+        topic_0:
+          type: string
+          description: Event signature hash.
+        data:
+          type: string
+          description: Non-indexed log data.
     Account:
       type: object
       description: Represents an externally-owned account or smart contract.
@@ -451,56 +479,7 @@ components:
         created_block_number:
           type: integer
           description: Block number when the account was created.
-    Trace:
-      type: object
-      description: Represents an internal transaction trace.
-      properties:
-        transaction_hash:
-          type: string
-        trace_index:
-          type: integer
-        block_number:
-          type: integer
-        timestamp:
-          type: string
-          format: date-time
-        from_address:
-          type: string
-        to_address:
-          type: string
-        value:
-          type: string
-          description: Value transferred in wei.
-        call_type:
-          type: string
-          enum:
-          - call
-          - staticcall
-          - delegatecall
-          - create
-          - selfdestruct
   parameters:
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of results to return.
-      schema:
-        type: integer
-        default: 100
-        minimum: 1
-        maximum: 500
-    Order:
-      name: order
-      in: query
-      required: false
-      description: Sort direction for results.
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
     ChainId:
       name: chain_id
       in: query
@@ -519,6 +498,27 @@ components:
         - arbitrum
         - base
         - avalanche
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

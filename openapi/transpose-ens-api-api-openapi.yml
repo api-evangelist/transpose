@@ -152,12 +152,70 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
+  schemas:
+    EnsRecord:
+      type: object
+      description: Represents an ENS domain record.
+      properties:
+        ens_name:
+          type: string
+          description: The ENS domain name (e.g., vitalik.eth).
+        node:
+          type: string
+          description: The namehash of the ENS name.
+        token_id:
+          type: string
+        owner_address:
+          type: string
+        resolved_address:
+          type: string
+        registration_timestamp:
+          type: string
+          format: date-time
+        expiration_timestamp:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
+    EnsTransfer:
+      type: object
+      description: Represents an ENS name transfer or registration event.
+      properties:
+        transaction_hash:
+          type: string
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        ens_name:
+          type: string
+        from_address:
+          type: string
+        to_address:
+          type: string
   parameters:
     TransferredAfter:
       name: transferred_after
       in: query
       required: false
       description: 'The earlier transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
+
+        '
+      schema:
+        type: string
+    TransferredBefore:
+      name: transferred_before
+      in: query
+      required: false
+      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
 
         '
       schema:
@@ -183,64 +241,6 @@ components:
         - asc
         - desc
         default: desc
-    TransferredBefore:
-      name: transferred_before
-      in: query
-      required: false
-      description: 'The later transfer date, inclusive. Accepts Unix epoch seconds or ISO-8601 format.
-
-        '
-      schema:
-        type: string
-  schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: error
-        message:
-          type: string
-          description: Human-readable error description.
-    EnsRecord:
-      type: object
-      description: Represents an ENS domain record.
-      properties:
-        ens_name:
-          type: string
-          description: The ENS domain name (e.g., vitalik.eth).
-        node:
-          type: string
-          description: The namehash of the ENS name.
-        token_id:
-          type: string
-        owner_address:
-          type: string
-        resolved_address:
-          type: string
-        registration_timestamp:
-          type: string
-          format: date-time
-        expiration_timestamp:
-          type: string
-          format: date-time
-    EnsTransfer:
-      type: object
-      description: Represents an ENS name transfer or registration event.
-      properties:
-        transaction_hash:
-          type: string
-        block_number:
-          type: integer
-        timestamp:
-          type: string
-          format: date-time
-        ens_name:
-          type: string
-        from_address:
-          type: string
-        to_address:
-          type: string
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

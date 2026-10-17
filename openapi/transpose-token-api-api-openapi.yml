@@ -304,6 +304,52 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    Token:
+      type: object
+      description: Represents an ERC-20 or ERC-777 fungible token.
+      properties:
+        contract_address:
+          type: string
+        name:
+          type: string
+        symbol:
+          type: string
+        decimals:
+          type: integer
+        total_supply:
+          type: string
+        created_timestamp:
+          type: string
+          format: date-time
+        creator_address:
+          type: string
+    NativeTokenTransfer:
+      type: object
+      description: Represents a native token (ETH, MATIC, etc.) transfer.
+      properties:
+        transaction_hash:
+          type: string
+        block_number:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        from_address:
+          type: string
+        to_address:
+          type: string
+        value:
+          type: string
+          description: Value transferred in wei.
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
     TokenTransfer:
       type: object
       description: Represents a token transfer event.
@@ -326,33 +372,6 @@ components:
         quantity:
           type: string
           description: Amount transferred (in token's smallest unit).
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: error
-        message:
-          type: string
-          description: Human-readable error description.
-    NativeTokenTransfer:
-      type: object
-      description: Represents a native token (ETH, MATIC, etc.) transfer.
-      properties:
-        transaction_hash:
-          type: string
-        block_number:
-          type: integer
-        timestamp:
-          type: string
-          format: date-time
-        from_address:
-          type: string
-        to_address:
-          type: string
-        value:
-          type: string
-          description: Value transferred in wei.
     TokenSwap:
       type: object
       description: Represents a DEX swap event.
@@ -380,25 +399,6 @@ components:
           type: string
         quantity_out:
           type: string
-    Token:
-      type: object
-      description: Represents an ERC-20 or ERC-777 fungible token.
-      properties:
-        contract_address:
-          type: string
-        name:
-          type: string
-        symbol:
-          type: string
-        decimals:
-          type: integer
-        total_supply:
-          type: string
-        created_timestamp:
-          type: string
-          format: date-time
-        creator_address:
-          type: string
   parameters:
     TransferredAfter:
       name: transferred_after
@@ -409,27 +409,6 @@ components:
         '
       schema:
         type: string
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of results to return.
-      schema:
-        type: integer
-        default: 100
-        minimum: 1
-        maximum: 500
-    Order:
-      name: order
-      in: query
-      required: false
-      description: Sort direction for results.
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
     TransferredBefore:
       name: transferred_before
       in: query
@@ -457,6 +436,27 @@ components:
         - arbitrum
         - base
         - avalanche
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

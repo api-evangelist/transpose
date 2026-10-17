@@ -182,15 +182,21 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
+    TokenPrice:
       type: object
+      description: Represents a point-in-time token price.
       properties:
-        status:
+        contract_address:
           type: string
-          example: error
-        message:
+        timestamp:
           type: string
-          description: Human-readable error description.
+          format: date-time
+        price_usd:
+          type: number
+          description: Token price in USD.
+        price_eth:
+          type: number
+          description: Token price in ETH.
     OhlcPrice:
       type: object
       description: Represents OHLC candlestick price data for a token.
@@ -213,43 +219,16 @@ components:
           type: number
         volume_usd:
           type: number
-    TokenPrice:
+    ErrorResponse:
       type: object
-      description: Represents a point-in-time token price.
       properties:
-        contract_address:
+        status:
           type: string
-        timestamp:
+          example: error
+        message:
           type: string
-          format: date-time
-        price_usd:
-          type: number
-          description: Token price in USD.
-        price_eth:
-          type: number
-          description: Token price in ETH.
+          description: Human-readable error description.
   parameters:
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of results to return.
-      schema:
-        type: integer
-        default: 100
-        minimum: 1
-        maximum: 500
-    Order:
-      name: order
-      in: query
-      required: false
-      description: Sort direction for results.
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
     ChainId:
       name: chain_id
       in: query
@@ -268,6 +247,27 @@ components:
         - arbitrum
         - base
         - avalanche
+    Order:
+      name: order
+      in: query
+      required: false
+      description: Sort direction for results.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of results to return.
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 500
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

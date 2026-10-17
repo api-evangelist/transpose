@@ -76,26 +76,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    SqlQueryRequest:
-      type: object
-      required:
-      - sql
-      properties:
-        sql:
-          type: string
-          description: 'SQL query against Transpose''s indexed blockchain data. Tables are namespaced by chain (e.g., ethereum.nft_sales, polygon.tokens).
-
-            '
-          example: SELECT * FROM ethereum.nft_sales ORDER BY timestamp DESC LIMIT 10;
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: error
-        message:
-          type: string
-          description: Human-readable error description.
     SqlQueryResponse:
       type: object
       properties:
@@ -113,6 +93,26 @@ components:
           items:
             type: string
           description: Column names of the result set.
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          description: Human-readable error description.
+    SqlQueryRequest:
+      type: object
+      required:
+      - sql
+      properties:
+        sql:
+          type: string
+          description: 'SQL query against Transpose''s indexed blockchain data. Tables are namespaced by chain (e.g., ethereum.nft_sales, polygon.tokens).
+
+            '
+          example: SELECT * FROM ethereum.nft_sales ORDER BY timestamp DESC LIMIT 10;
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
