@@ -44,6 +44,17 @@ tags:
 - Smart Contracts
 - Historical Data
 - DeFi
+- Decentralized Exchange
+tags_raw:
+- Blockchain
+- NFT
+- Cryptocurrency
+- Web3
+- Ethereum
+- Token Transfers
+- Smart Contracts
+- Historical Data
+- DeFi
 - DEX
 apis:
 - aid: transpose:transpose-block-api-api
